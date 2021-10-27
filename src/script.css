@@ -24,3 +24,30 @@
     height: min-content;
     display: inline-flex;
 }
+
+.in-params {
+    margin: 20px;
+}
+
+input{
+    width: min-content;
+    margin: 5px;
+}
+
+#container {
+    display: inline-flex;
+    width: min-content;
+    height: min-content;
+}
+
+#counter {
+    font-size: 45px;
+    padding: 2px;
+    border-color: brown;
+    color: brown;
+    border: solid 2px;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    text-align: center;
+}

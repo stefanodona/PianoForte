@@ -18,26 +18,29 @@
     <button class="white" id="C" onclick="play(12)">C</button>
 </div>
 
+<div id="container">
+    <div class="in-params">
+        <form>
+          <label for="AT">Attack Time</label>
+          <input type="number" id="AT"></input>
+        </form>
+        <form>
+          <label for="DT">Decay Time</label>
+          <input type="number" id="DT"></input>
+        </form>
+        <form>
+          <label for="SL">Sustain Level</label>
+          <input type="number" id="SL" min="0" max="1"></input>
+        </form>
+        <form>
+          <label for="ST">Sustain Time</label>
+          <input type="number" id="ST"></input>
+        </form>
+        <form>
+          <label for="RT">Release Time</label>
+          <input type="number" id="RT"></input>
+        </form>
+    </div>
 
-<div class="in-params">
-    <form>
-      <label for="AT">Attack Time</label>
-      <input type="number" id="AT"></input>
-    </form>
-    <form>
-      <label for="DT">Decay Time</label>
-      <input type="number" id="DT"></input>
-    </form>
-    <form>
-      <label for="SL">Sustain Level</label>
-      <input type="number" id="SL" min="0" max="1"></input>
-    </form>
-    <form>
-      <label for="ST">Sustain Time</label>
-      <input type="number" id="ST"></input>
-    </form>
-    <form>
-      <label for="RT">Release Time</label>
-      <input type="number" id="RT"></input>
-    </form>
-  </div>
+    <div id="counter">0</div>
+</div>

@@ -37,9 +37,14 @@ function play(n) {
     g.gain.setValueAtTime(aS, now + aA + aD + aST);
     g.gain.linearRampToValueAtTime(0, now + aA + aD + aST + aR);
     o.stop(now + aA + aD + aST + aR)
-
+    counter += 1;
+    render();
 }
 
 function strip(number) {
     return (parseFloat(number));
+}
+
+function render() {
+    document.getElementById("counter").innerHTML = counter;
 }
