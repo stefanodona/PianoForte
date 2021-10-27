@@ -20,7 +20,7 @@ document.getElementById("RT").value = r;    // release time
 function play(n) {
     o = c.createOscillator();
     o.connect(g);
-    o.frequency.value = Math.pow(2, n / 12);
+    o.frequency.value = 261.63 * Math.pow(2, n / 12);
     now = c.currentTime;
 
     o.start(now)
