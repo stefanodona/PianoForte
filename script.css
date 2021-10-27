@@ -24,3 +24,12 @@
     height: min-content;
     display: inline-flex;
 }
+
+.in-params {
+    margin: 20px;
+}
+
+input{
+    width: min-content;
+    margin: 5px;
+}
