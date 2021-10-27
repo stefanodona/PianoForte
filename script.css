@@ -1,0 +1,26 @@
+.white {
+    background-color: whitesmoke;
+    width: 70px;
+    height: 150px;
+    padding: 5px;
+    border-radius: 5px;
+    border-color: black;
+    margin: 3px;
+    padding: 2px;
+  }  
+
+.black {
+    background-color: black;
+    width: 50px;
+    height: 100px;
+    border-radius: 5px;
+    color: whitesmoke;
+    margin: 3px;
+    padding: 2px;
+}
+
+#piano {
+    width: min-content;
+    height: min-content;
+    display: inline-flex;
+}
