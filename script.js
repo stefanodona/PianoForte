@@ -36,7 +36,7 @@ function play(n) {
     g.gain.linearRampToValueAtTime(aS, now + aA + aD);
     g.gain.setValueAtTime(aS, now + aA + aD + aST);
     g.gain.linearRampToValueAtTime(0, now + aA + aD + aST + aR);
-    o.stop(c.now + aA + aD + aST + aR)
+    o.stop(now + aA + aD + aST + aR)
 
 }
 
