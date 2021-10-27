@@ -24,7 +24,6 @@ function play(n) {
     now = c.currentTime;
 
     o.start(now)
-    o.stop(now+aA+aD+aS+aST+)
 
     aA = strip(document.getElementById("AT").value);
     aD = strip(document.getElementById("DT").value);
@@ -32,12 +31,12 @@ function play(n) {
     aST = strip(document.getElementById("ST").value);
     aR = strip(document.getElementById("RT").value);
 
-    g.gain.setValueAtTime(0, c.currentTime);
-    g.gain.linearRampToValueAtTime(1, c.currentTime + aA);
-    g.gain.linearRampToValueAtTime(aS, c.currentTime + aA + aD);
-    g.gain.setValueAtTime(aS, c.currentTime + aA + aD + aST);
-    g.gain.linearRampToValueAtTime(0, c.currentTime + aA + aD + aST + aR);
-    o.stop(c.currentTime + aA + aD + aST + aR)
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(1, now + aA);
+    g.gain.linearRampToValueAtTime(aS, now + aA + aD);
+    g.gain.setValueAtTime(aS, now + aA + aD + aST);
+    g.gain.linearRampToValueAtTime(0, now + aA + aD + aST + aR);
+    o.stop(c.now + aA + aD + aST + aR)
 
 }
 
