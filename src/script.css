@@ -50,4 +50,5 @@ input{
     height: 100px;
     margin: auto;
     text-align: center;
+    border-radius: 10px;
 }
