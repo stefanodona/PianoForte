@@ -1,0 +1,23 @@
+{
+  "name": "PianoForte",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stefanodona/PianoForte.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stefanodona/PianoForte/issues"
+  },
+  "homepage": "https://github.com/stefanodona/PianoForte#readme",
+  "dependencies": {
+    "parcel-bundler": "^1.12.5"
+  }
+}
