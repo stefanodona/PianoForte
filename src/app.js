@@ -5,8 +5,9 @@ const c = new AudioContext();
 
 var counter = 0;
 
-var g = c.createGain();
-g.connect(c.destination);
+var master = c.createGain();
+master.gain.value = 0.5;
+master.connect(c.destination);
 
 const a = 0.01;
 const d = 0.02;
@@ -21,6 +22,8 @@ document.getElementById("ST").value = st;   // sustain time
 document.getElementById("RT").value = r;    // release time
 
 window.play = function play(n) {
+    var g = c.createGain();
+    g.connect(master);
     var o = c.createOscillator();
     o.connect(g);
     o.frequency.value = 261.63 * Math.pow(2, n / 12);
