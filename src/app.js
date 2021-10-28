@@ -49,8 +49,14 @@ window.play = function play(n) {
 
 
 window.resetCounter = function resetCounter() {
-    counter = 0;
-    render();
+    firebase.firestore().collection("clicks").doc("clicks").update({
+        click_num: 0
+
+    }).then(() => {
+        console.log("Document updated"); // Document updated
+    }).catch((error) => {
+        console.error("Error updating doc", error);
+    });
 }
 
 function strip(number) {
