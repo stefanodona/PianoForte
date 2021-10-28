@@ -3,12 +3,10 @@ import 'firebase/firestore';
 
 const c = new AudioContext();
 
-var unison = 0;
 var counter = 0;
 
-var master = c.createGain();
-master.connect(c.destination);
-master.gain.value = 0.5;
+var g = c.createGain();
+g.connect(c.destination);
 
 const a = 0.01;
 const d = 0.02;
@@ -23,8 +21,6 @@ document.getElementById("ST").value = st;   // sustain time
 document.getElementById("RT").value = r;    // release time
 
 window.play = function play(n) {
-    var g = c.createGain();
-    g.connect(master);
     var o = c.createOscillator();
     o.connect(g);
     o.frequency.value = 261.63 * Math.pow(2, n / 12);
@@ -50,13 +46,6 @@ window.play = function play(n) {
     //counter += 1;
     render();
 }
-
-/* FUNZIONE DI RESET DEL COUNTER
-function resetCounter() {
-    counter = 0;
-    render();
-}
-*/
 
 function strip(number) {
     return (parseFloat(number));
