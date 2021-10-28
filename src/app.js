@@ -51,6 +51,13 @@ window.play = function play(n) {
     render();
 }
 
+/* FUNZIONE DI RESET DEL COUNTER
+function resetCounter() {
+    counter = 0;
+    render();
+}
+*/
+
 function strip(number) {
     return (parseFloat(number));
 }
