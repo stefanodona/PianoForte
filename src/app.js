@@ -85,50 +85,7 @@ if (!firebase.apps.length) {
 //const db = firebase.firestore();
 const db = firebase.firestore();
 
-/*
-const clicksDoc = doc(db, 'clicks/clicks')
 
-function incrementClicks(myclick_num) {
-    const clicksData = {
-        click_num : myclick_num
-    }
-    setDoc(clicksDoc, clicksData, {merge: true})
-        .then(() => {
-            console.log('value written to database');
-        })
-        .catch((error) => {
-            console.log("I got an error! ${error}");
-        })
-}
-
-function listenToCLicks() {
-    onSnapshot(clicksDoc, docSnapshot => {
-        if(docSnapshot.exists()) {
-            const docData = docSnapshot.data();
-            console.log("new data downloaded is", docData);
-            counter = docData.click_num
-            render()
-        }
-    });
-}
-
-
-
-
-const bookRef = firebase.firestore().collection("books").doc("another book");
-
-bookRef
-  .update({
-    year: 1869,
-  })
-  .then(() => {
-    console.log("Document updated"); // Document updated
-  })
-  .catch((error) => {
-    console.error("Error updating doc", error);
-  });	
-
-*/
 var clicksRef = db.collection("clicks").doc("clicks");
 
 
@@ -149,70 +106,11 @@ firebase
 .collection("clicks")
 .doc('clicks')
 .onSnapshot((snapshot) => {
-    /*
-    const data = snapshot.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-    }));
-    */
     console.log("All data in 'books' collection", snapshot.data());
     counter = snapshot.data().click_num;
     render()
 });
 
-/*
-    firebase.firestore().collection("clicks").doc("clicks").get().then((doc) => {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-            console.log("Document clicks:", doc.data().click_num);
-            //counter = doc.data().click_num;
-            //return doc.data().click_num;
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
-/*
-class Clicks {
-    constructor (click_num) {
-        this.click_num = click_num    
-    }
-    toString() {
-        return this.click_num;
-    }
-}
-var clicksConverter = {
-    toFirestore: function(clicks) {
-        return {
-            clicks: this.clicks
-            };
-    },
-    fromFirestore: function(snapshot, options){
-        const data = snapshot.data(options);
-        return new Clicks(data.click_num);
-    }
-};
-*/
-/*
-const clicksRef = firebase.firestore().collection('clicks');
-
-
-
-clicksRef
-  .get()
-  .then((snapshot) => {
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    console.log("All data in 'clicks' collection", data);
-    console.log("All data in 'clicks' collection", data.doc("clicks").data("click_num")); 
-    // [ { id: 'glMeZvPpTN1Ah31sKcnj', title: 'The Great Gatsby' } ]
-    //counter = data.doc("clicks").
-  });
-*/
 
 
 //https://www.freecodecamp.org/news/the-firestore-tutorial-for-2020-learn-by-example/
