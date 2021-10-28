@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import {getFirestore, doc} from 'firebase/firestore';
+import 'firebase/firestore';
 
 const c = new AudioContext();
 
@@ -40,11 +40,11 @@ window.play = function play(n) {
     g.gain.setValueAtTime(aS, now + aA + aD + aST);
     g.gain.linearRampToValueAtTime(0, now + aA + aD + aST + aR);
     o.stop(now + aA + aD + aST + aR)
-    incrementClicks(counter+1);
-    listenToCLicks();
+    incrementClicks();
+    //listenToCLicks();
     //getClicks();
     //counter += 1;
-    //render();
+    render();
 }
 
 function strip(number) {
@@ -83,8 +83,9 @@ if (!firebase.apps.length) {
    firebase.app(); // if already initialized, use that one
 }
 //const db = firebase.firestore();
-const db = getFirestore();
+const db = firebase.firestore();
 
+/*
 const clicksDoc = doc(db, 'clicks/clicks')
 
 function incrementClicks(myclick_num) {
@@ -112,8 +113,8 @@ function listenToCLicks() {
 }
 
 
-///
-/*
+
+
 const bookRef = firebase.firestore().collection("books").doc("another book");
 
 bookRef
@@ -128,9 +129,9 @@ bookRef
   });	
 
 */
-//var clicksRef = db.collection("clicks").doc("clicks");
+var clicksRef = db.collection("clicks").doc("clicks");
 
-/*
+
 function incrementClicks() {
     firebase.firestore().collection("clicks").doc("clicks").update({
         click_num: firebase.firestore.FieldValue.increment(1)
@@ -141,15 +142,30 @@ function incrementClicks() {
         console.error("Error updating doc", error);
     });
 
-}*/
+}
 
+firebase
+.firestore()
+.collection("clicks")
+.doc('clicks')
+.onSnapshot((snapshot) => {
+    /*
+    const data = snapshot.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+    }));
+    */
+    console.log("All data in 'books' collection", snapshot.data());
+    counter = snapshot.data().click_num;
+    render()
+});
 
-/* 
+/*
     firebase.firestore().collection("clicks").doc("clicks").get().then((doc) => {
         if (doc.exists) {
             console.log("Document data:", doc.data());
             console.log("Document clicks:", doc.data().click_num);
-            counter = doc.data().click_num;
+            //counter = doc.data().click_num;
             //return doc.data().click_num;
         } else {
             // doc.data() will be undefined in this case
@@ -158,8 +174,6 @@ function incrementClicks() {
     }).catch((error) => {
         console.log("Error getting document:", error);
     });
-}
-*/
 /*
 class Clicks {
     constructor (click_num) {
