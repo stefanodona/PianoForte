@@ -52,7 +52,7 @@ window.play = function play(n) {
 }
 
 /* FUNZIONE DI RESET DEL COUNTER*/
-function resetCounter() {
+window.resetCounter = function resetCounter() {
     counter = 0;
     render();
 }
