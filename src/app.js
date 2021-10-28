@@ -47,6 +47,12 @@ window.play = function play(n) {
     render();
 }
 
+
+window.resetCounter = function resetCounter() {
+    counter = 0;
+    render();
+}
+
 function strip(number) {
     return (parseFloat(number));
 }
