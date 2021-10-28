@@ -83,7 +83,7 @@ if (!firebase.apps.length) {
 }
 const db = firebase.firestore();
 
-const clicksDoc = doc(firestore,'clicks/clicks')
+const clicksDoc = doc(db,'clicks/clicks')
 
 function incrementClicks(myclick_num) {
     const clicksData = {
