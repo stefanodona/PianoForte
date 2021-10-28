@@ -40,7 +40,7 @@ window.play = function play(n) {
     g.gain.setValueAtTime(aS, now + aA + aD + aST);
     g.gain.linearRampToValueAtTime(0, now + aA + aD + aST + aR);
     o.stop(now + aA + aD + aST + aR)
-    incrementClicks();
+    incrementClicks(counter+1);
     listenToCLicks();
     //getClicks();
     
@@ -87,9 +87,9 @@ const clicksDoc = doc(firestore,'clicks/clicks')
 
 function incrementClicks(myclick_num) {
     const clicksData = {
-        click_num = myclick_num 
+        click_num : myclick_num
     }
-    MediaStreamAudioSourceNode(clicksDoc, clicksData, {merge: true})
+    setDoc(clicksDoc, clicksData, {merge: true})
         .then(() => {
             console.log('value written to database');
         })
