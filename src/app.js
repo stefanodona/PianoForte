@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import 'firebase/firestore';
+import {getFirestore, doc} from 'firebase/firestore';
 
 c = new AudioContext();
 
@@ -41,9 +41,10 @@ window.play = function play(n) {
     g.gain.linearRampToValueAtTime(0, now + aA + aD + aST + aR);
     o.stop(now + aA + aD + aST + aR)
     incrementClicks();
+    listenToCLicks();
     //getClicks();
     
-    render();
+    //render();
 }
 
 function strip(number) {
@@ -81,6 +82,33 @@ if (!firebase.apps.length) {
    firebase.app(); // if already initialized, use that one
 }
 const db = firebase.firestore();
+
+const clicksDoc = doc(firestore,'clicks/clicks')
+
+function incrementClicks(myclick_num) {
+    const clicksData = {
+        click_num = myclick_num 
+    }
+    MediaStreamAudioSourceNode(clicksDoc, clicksData, {merge: true})
+        .then(() => {
+            console.log('value written to database');
+        })
+        .catch((error) => {
+            console.log("I got an error! ${error}");
+        })
+}
+
+function listenToCLicks() {
+    onSnapshot(clicksDoc, docSnapshot => {
+        if(docSnapshot.exists()) {
+            const docData = docSnapshot.data();
+            console.log("new data downloaded is", docData);
+            counter = docData.click_num
+            render()
+        }
+    });
+}
+
 ///
 /*
 const bookRef = firebase.firestore().collection("books").doc("another book");
@@ -98,6 +126,8 @@ bookRef
 
 */
 //var clicksRef = db.collection("clicks").doc("clicks");
+
+/*
 function incrementClicks() {
     firebase.firestore().collection("clicks").doc("clicks").update({
         click_num: firebase.firestore.FieldValue.increment(1)
@@ -108,7 +138,10 @@ function incrementClicks() {
         console.error("Error updating doc", error);
     });
 
-    
+}*/
+
+
+/* 
     firebase.firestore().collection("clicks").doc("clicks").get().then((doc) => {
         if (doc.exists) {
             console.log("Document data:", doc.data());
@@ -123,6 +156,7 @@ function incrementClicks() {
         console.log("Error getting document:", error);
     });
 }
+*/
 /*
 class Clicks {
     constructor (click_num) {
