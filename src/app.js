@@ -1,11 +1,11 @@
 import firebase from 'firebase/app';
 import {getFirestore, doc} from 'firebase/firestore';
 
-c = new AudioContext();
+const c = new AudioContext();
 
 var counter = 0;
 
-g = c.createGain();
+var g = c.createGain();
 g.connect(c.destination);
 
 const a = 0.01;
@@ -21,18 +21,18 @@ document.getElementById("ST").value = st;   // sustain time
 document.getElementById("RT").value = r;    // release time
 
 window.play = function play(n) {
-    o = c.createOscillator();
+    var o = c.createOscillator();
     o.connect(g);
     o.frequency.value = 261.63 * Math.pow(2, n / 12);
-    now = c.currentTime;
+    var now = c.currentTime;
 
     o.start(now)
 
-    aA = strip(document.getElementById("AT").value);
-    aD = strip(document.getElementById("DT").value);
-    aS = strip(document.getElementById("SL").value);
-    aST = strip(document.getElementById("ST").value);
-    aR = strip(document.getElementById("RT").value);
+    var aA = strip(document.getElementById("AT").value);
+    var aD = strip(document.getElementById("DT").value);
+    var aS = strip(document.getElementById("SL").value);
+    var aST = strip(document.getElementById("ST").value);
+    var aR = strip(document.getElementById("RT").value);
 
     g.gain.setValueAtTime(0, now);
     g.gain.linearRampToValueAtTime(1, now + aA);
@@ -43,7 +43,7 @@ window.play = function play(n) {
     incrementClicks(counter+1);
     listenToCLicks();
     //getClicks();
-    
+    //counter += 1;
     //render();
 }
 
@@ -55,6 +55,7 @@ function render() {
     document.getElementById("counter").innerHTML = counter;
 }
 console.log("hi")
+
 //Firestore addition
 
 // Your web app's Firebase configuration
@@ -81,9 +82,10 @@ if (!firebase.apps.length) {
 }else {
    firebase.app(); // if already initialized, use that one
 }
-const db = firebase.firestore();
+//const db = firebase.firestore();
+const db = getFirestore();
 
-const clicksDoc = doc(firestore,'clicks/clicks')
+const clicksDoc = doc(db, 'clicks/clicks')
 
 function incrementClicks(myclick_num) {
     const clicksData = {
@@ -108,6 +110,7 @@ function listenToCLicks() {
         }
     });
 }
+
 
 ///
 /*
