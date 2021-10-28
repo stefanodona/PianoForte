@@ -1,12 +1,14 @@
 import firebase from 'firebase/app';
-import {getFirestore, doc} from 'firebase/firestore';
+import 'firebase/firestore';
 
 const c = new AudioContext();
 
+var unison = 0;
 var counter = 0;
 
-var g = c.createGain();
-g.connect(c.destination);
+var master = c.createGain();
+master.connect(c.destination);
+master.gain.value = 0.5;
 
 const a = 0.01;
 const d = 0.02;
@@ -21,6 +23,8 @@ document.getElementById("ST").value = st;   // sustain time
 document.getElementById("RT").value = r;    // release time
 
 window.play = function play(n) {
+    var g = c.createGain();
+    g.connect(master);
     var o = c.createOscillator();
     o.connect(g);
     o.frequency.value = 261.63 * Math.pow(2, n / 12);
@@ -40,12 +44,19 @@ window.play = function play(n) {
     g.gain.setValueAtTime(aS, now + aA + aD + aST);
     g.gain.linearRampToValueAtTime(0, now + aA + aD + aST + aR);
     o.stop(now + aA + aD + aST + aR)
-    incrementClicks(counter+1);
-    listenToCLicks();
+    incrementClicks();
+    //listenToCLicks();
     //getClicks();
     //counter += 1;
-    //render();
+    render();
 }
+
+/* FUNZIONE DI RESET DEL COUNTER
+function resetCounter() {
+    counter = 0;
+    render();
+}
+*/
 
 function strip(number) {
     return (parseFloat(number));
@@ -83,54 +94,12 @@ if (!firebase.apps.length) {
    firebase.app(); // if already initialized, use that one
 }
 //const db = firebase.firestore();
-const db = getFirestore();
-
-const clicksDoc = doc(db, 'clicks/clicks')
-
-function incrementClicks(myclick_num) {
-    const clicksData = {
-        click_num : myclick_num
-    }
-    setDoc(clicksDoc, clicksData, {merge: true})
-        .then(() => {
-            console.log('value written to database');
-        })
-        .catch((error) => {
-            console.log("I got an error! ${error}");
-        })
-}
-
-function listenToCLicks() {
-    onSnapshot(clicksDoc, docSnapshot => {
-        if(docSnapshot.exists()) {
-            const docData = docSnapshot.data();
-            console.log("new data downloaded is", docData);
-            counter = docData.click_num
-            render()
-        }
-    });
-}
+const db = firebase.firestore();
 
 
-///
-/*
-const bookRef = firebase.firestore().collection("books").doc("another book");
+var clicksRef = db.collection("clicks").doc("clicks");
 
-bookRef
-  .update({
-    year: 1869,
-  })
-  .then(() => {
-    console.log("Document updated"); // Document updated
-  })
-  .catch((error) => {
-    console.error("Error updating doc", error);
-  });	
 
-*/
-//var clicksRef = db.collection("clicks").doc("clicks");
-
-/*
 function incrementClicks() {
     firebase.firestore().collection("clicks").doc("clicks").update({
         click_num: firebase.firestore.FieldValue.increment(1)
@@ -141,64 +110,18 @@ function incrementClicks() {
         console.error("Error updating doc", error);
     });
 
-}*/
-
-
-/* 
-    firebase.firestore().collection("clicks").doc("clicks").get().then((doc) => {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-            console.log("Document clicks:", doc.data().click_num);
-            counter = doc.data().click_num;
-            //return doc.data().click_num;
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
 }
-*/
-/*
-class Clicks {
-    constructor (click_num) {
-        this.click_num = click_num    
-    }
-    toString() {
-        return this.click_num;
-    }
-}
-var clicksConverter = {
-    toFirestore: function(clicks) {
-        return {
-            clicks: this.clicks
-            };
-    },
-    fromFirestore: function(snapshot, options){
-        const data = snapshot.data(options);
-        return new Clicks(data.click_num);
-    }
-};
-*/
-/*
-const clicksRef = firebase.firestore().collection('clicks');
 
+firebase
+.firestore()
+.collection("clicks")
+.doc('clicks')
+.onSnapshot((snapshot) => {
+    console.log("All data in 'books' collection", snapshot.data());
+    counter = snapshot.data().click_num;
+    render()
+});
 
-
-clicksRef
-  .get()
-  .then((snapshot) => {
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    console.log("All data in 'clicks' collection", data);
-    console.log("All data in 'clicks' collection", data.doc("clicks").data("click_num")); 
-    // [ { id: 'glMeZvPpTN1Ah31sKcnj', title: 'The Great Gatsby' } ]
-    //counter = data.doc("clicks").
-  });
-*/
 
 
 //https://www.freecodecamp.org/news/the-firestore-tutorial-for-2020-learn-by-example/
