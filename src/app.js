@@ -8,6 +8,7 @@ var counter = 0;
 
 var master = c.createGain();
 master.connect(c.destination);
+master.gain.value = 0.5;
 
 const a = 0.01;
 const d = 0.02;
