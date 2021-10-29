@@ -13,8 +13,8 @@ master.connect(c.destination);
 const a = 0.01;
 const d = 0.02;
 const sl = 0.2;
-const st = 0.2;
-const r = 0.5;
+const st = 0.5;
+const r = 0.8;
 
 document.getElementById("AT").value = a;    // attack time
 document.getElementById("DT").value = d;    // decay time
@@ -68,6 +68,20 @@ window.resetCounter = function resetCounter() {
     });
 }
 
+window.playC = function playC() {
+    play(0);
+    play(3);
+    play(5);
+    play(7);
+    play(10);
+}
+
+window.playG = function playG() {
+    play(2);
+    play(7);
+    play(9);
+    play(12);
+}
 
 function strip(number) {
     return (parseFloat(number));
@@ -78,6 +92,106 @@ function render() {
     
 }
 console.log("hi")
+
+window.snare = function snare() {
+    var bs = c.createBufferSource();
+    var b = c.createBuffer(1, 4096, c.sampleRate);
+    var data = b.getChannelData(0);
+    for (var i = 0; i < 4096; i++) data[i] = Math.random();
+    var g = c.createGain();
+    g.gain.setValueAtTime(1, c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
+  
+    var f = c.createBiquadFilter();
+    f.type = "highpass";
+    f.frequency.setValueAtTime(100, c.currentTime);
+    f.frequency.linearRampToValueAtTime(1000, c.currentTime + 0.3);
+  
+    bs.buffer = b;
+    bs.loop = true;
+    bs.connect(g);
+    g.connect(f);
+    f.connect(c.destination);
+    bs.start();
+    bs.stop(c.currentTime + 0.2);
+  }
+
+window.kick = function kick() {
+    var now = c.currentTime;
+    var o = c.createOscillator();
+    o.frequency.setValueAtTime(100, now);
+    o.frequency.exponentialRampToValueAtTime(0.01, now + 0.5);
+    var o2 = c.createOscillator();
+    o2.type = "triangle";
+    o2.frequency.setValueAtTime(100, now);
+    o2.frequency.exponentialRampToValueAtTime(0.01, now + 0.5);
+    var g = c.createGain();
+    g.gain.setValueAtTime(1, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    o.connect(g);
+    o2.connect(g);
+    g.connect(c.destination);
+    o.start();
+    o2.start();
+    o.stop(now + 0.5);
+    o2.stop(now + 0.5);
+}
+
+window.hh = function hh() {
+    var bs = c.createBufferSource();
+    var b = c.createBuffer(1, 4096, c.sampleRate);
+    var data = b.getChannelData(0);
+    for (var i = 0; i < 4096; i++) data[i] = Math.random();
+    var g = c.createGain();
+    g.gain.setValueAtTime(0.3, c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
+  
+    var f = c.createBiquadFilter();
+    f.type = "highpass";
+    f.frequency.value = 7000;
+    //f.frequency.linearRampToValueAtTime(1000, c.currentTime + 0.3);
+  
+    bs.buffer = b;
+    bs.loop = true;
+    bs.connect(g);
+    g.connect(f);
+    f.connect(c.destination);
+    bs.start();
+    bs.stop(c.currentTime + 0.05);
+  }
+
+var t = 0;
+const bpm = 90;
+const interval = 15000/bpm;
+const n = 2;
+let timer;
+
+function WhenKick(){
+    return (t%8 == 0 || t%8 == 3);
+}
+  
+function WhenSnare(){
+    return t%8 == 4;
+}
+
+function WhenHH() {
+    return (t%2 == 0 || t%4 == 3);
+}
+
+window.rhythm = function rhythm() {
+    if (WhenKick()) kick();
+    if (WhenSnare()) snare();
+    if (WhenHH()) hh();
+    if (t%16==0) playC();
+    if (t%16==8) playG();
+    t++;
+    timer = setTimeout(rhythm, interval);
+}
+
+window.stop = function stop() {
+    clearTimeout(timer);
+    t = 0;
+}
 
 //Firestore addition
 
