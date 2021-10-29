@@ -4,8 +4,7 @@ import 'firebase/firestore';
 const c = new AudioContext();
 
 var counter = 0;
-var unison = 0;
-let intervalID;
+var unison = 0;     // variable that give the number of unison notes to set the master gain
 
 var master = c.createGain();
 master.gain.value = 1;
@@ -47,16 +46,14 @@ window.play = function play(n) {
     g.gain.linearRampToValueAtTime(aS, now + aA + aD);
     g.gain.setValueAtTime(aS, now + aA + aD + aST);
     g.gain.linearRampToValueAtTime(0, now + aA + aD + aST + aR);
-    //o.stop(now + aA + aD + aST + aR)
+    o.stop(now + aA + aD + aST + aR)
     incrementClicks();
     //listenToCLicks();
     //getClicks();
     //counter += 1;
-    
-    intervalID = setTimeout(function () {stopNote(o)}, (aA + aD + aST + aR)*1000)
+
+    setTimeout(function () {unison -= 1}, (aA + aD + aST + aR)*1000)
     render();
-    console.log(unison);
-    console.log(intervalID);
 }
 
 
@@ -71,11 +68,6 @@ window.resetCounter = function resetCounter() {
     });
 }
 
-function stopNote(o) {
-    o.stop();
-    unison -= 1;
-    clearTimeout(intervalID);
-}
 
 function strip(number) {
     return (parseFloat(number));
