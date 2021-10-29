@@ -27,9 +27,23 @@ window.play = function play(n) {
     var now = c.currentTime;
     var g = c.createGain();
     var o = c.createOscillator();
+    o.type = "triangle";
+    var f = c.createBiquadFilter();
+    f.type = "lowpass";
+    f.frequency.setValueAtTime(1000, now);  
 
-    g.connect(master);
-    o.connect(g);
+
+    // detune modulation
+    var osc = c.createOscillator();
+    var oscGain = c.createGain();
+    oscGain.gain.value = 20;
+    osc.connect(oscGain);
+    oscGain.connect(o.detune);
+    osc.frequency.value = 2;
+    osc.type = "triangle"
+    osc.start();   
+    
+    o.connect(f).connect(g).connect(master);
 
     o.frequency.value = 261.63 * Math.pow(2, n / 12);
     master.gain.setValueAtTime(1/unison, now);
@@ -82,6 +96,13 @@ window.playG = function playG() {
     play(9);
     play(10);
     play(12);
+}
+
+window.playD = function playD() {
+    play(0);
+    play(2);
+    play(5);
+    play(9);
 }
 
 function strip(number) {
@@ -183,8 +204,10 @@ window.rhythm = function rhythm() {
     if (WhenKick()) kick();
     if (WhenSnare()) snare();
     if (WhenHH()) hh();
-    if (t%16==0) playC();
-    if (t%16==8) playG();
+    if (t%32==0) playC();
+    if (t%32==8) playG();
+    if (t%32==16) playD();
+    if (t%32==24) playC();
     t++;
     timer = setTimeout(rhythm, interval);
 }
@@ -192,9 +215,7 @@ window.rhythm = function rhythm() {
 window.stop = function stop() {
     clearTimeout(timer);
     t = 0;
-}
-
-
+}   
 
 //Firestore addition
 
