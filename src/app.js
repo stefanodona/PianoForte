@@ -5,6 +5,7 @@ const c = new window.AudioContext();
 
 var counter = 0;
 var unison = 0;     // variable that give the number of unison notes to set the master gain
+var detuneMod = true;
 
 var master = c.createGain();
 master.gain.value = 1;
@@ -34,14 +35,17 @@ window.play = function play(n) {
 
 
     // detune modulation
-    var osc = c.createOscillator();
-    var oscGain = c.createGain();
-    oscGain.gain.value = 20;
-    osc.connect(oscGain);
-    oscGain.connect(o.detune);
-    osc.frequency.value = 2;
-    osc.type = "triangle"
-    osc.start();   
+    if (detuneMod==true) {
+        var osc = c.createOscillator();
+        var oscGain = c.createGain();
+        oscGain.gain.value = 20;
+        osc.connect(oscGain);
+        oscGain.connect(o.detune);
+        osc.frequency.value = 2;
+        osc.type = "triangle"
+        osc.start(); 
+    }
+      
     
     o.connect(f).connect(g).connect(master);
 
@@ -216,6 +220,11 @@ window.stop = function stop() {
     clearTimeout(timer);
     t = 0;
 }   
+
+window.toggleMod = function toggleMod() {
+    if (detuneMod) detuneMod = false;
+    else detuneMod = true;
+}
 
 //Firestore addition
 
