@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-const c = new AudioContext();
+const c = new window.AudioContext();
 
 var counter = 0;
 var unison = 0;     // variable that give the number of unison notes to set the master gain
@@ -78,8 +78,9 @@ window.playC = function playC() {
 
 window.playG = function playG() {
     play(2);
-    play(7);
+    play(5);
     play(9);
+    play(10);
     play(12);
 }
 
@@ -192,6 +193,7 @@ window.stop = function stop() {
     clearTimeout(timer);
     t = 0;
 }
+
 
 //Firestore addition
 

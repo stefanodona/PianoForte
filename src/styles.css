@@ -69,4 +69,11 @@ input{
 #stop{
     background-color: red;
     color: white;
-  }
+}
+
+
+button {
+    width: min-content;
+    height: min-content;
+    padding: 10px;
+}
