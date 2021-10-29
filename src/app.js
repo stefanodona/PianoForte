@@ -4,9 +4,11 @@ import 'firebase/firestore';
 const c = new AudioContext();
 
 var counter = 0;
+var unison = 0;
+let intervalID;
 
 var master = c.createGain();
-master.gain.value = 0.5;
+master.gain.value = 1;
 master.connect(c.destination);
 
 const a = 0.01;
@@ -22,13 +24,16 @@ document.getElementById("ST").value = st;   // sustain time
 document.getElementById("RT").value = r;    // release time
 
 window.play = function play(n) {
-    var g = c.createGain();
-    g.connect(master);
-    var o = c.createOscillator();
-    o.connect(g);
-    o.frequency.value = 261.63 * Math.pow(2, n / 12);
+    unison +=1
     var now = c.currentTime;
+    var g = c.createGain();
+    var o = c.createOscillator();
 
+    g.connect(master);
+    o.connect(g);
+
+    o.frequency.value = 261.63 * Math.pow(2, n / 12);
+    master.gain.setValueAtTime(1/unison, now);
     o.start(now)
 
     var aA = strip(document.getElementById("AT").value);
@@ -42,12 +47,16 @@ window.play = function play(n) {
     g.gain.linearRampToValueAtTime(aS, now + aA + aD);
     g.gain.setValueAtTime(aS, now + aA + aD + aST);
     g.gain.linearRampToValueAtTime(0, now + aA + aD + aST + aR);
-    o.stop(now + aA + aD + aST + aR)
+    //o.stop(now + aA + aD + aST + aR)
     incrementClicks();
     //listenToCLicks();
     //getClicks();
     //counter += 1;
+    
+    intervalID = setTimeout(function () {stopNote(o)}, (aA + aD + aST + aR)*1000)
     render();
+    console.log(unison);
+    console.log(intervalID);
 }
 
 
@@ -62,12 +71,19 @@ window.resetCounter = function resetCounter() {
     });
 }
 
+function stopNote(o) {
+    o.stop();
+    unison -= 1;
+    clearTimeout(intervalID);
+}
+
 function strip(number) {
     return (parseFloat(number));
 }
 
 function render() {
     document.getElementById("counter").innerHTML = counter;
+    
 }
 console.log("hi")
 
