@@ -143,7 +143,7 @@ window.hh = function hh() {
     var data = b.getChannelData(0);
     for (var i = 0; i < 4096; i++) data[i] = Math.random();
     var g = c.createGain();
-    g.gain.setValueAtTime(0.3, c.currentTime);
+    g.gain.setValueAtTime(0.2, c.currentTime);
     g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
   
     var f = c.createBiquadFilter();
