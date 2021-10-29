@@ -105,8 +105,8 @@ window.snare = function snare() {
   
     var f = c.createBiquadFilter();
     f.type = "highpass";
-    f.frequency.setValueAtTime(100, c.currentTime);
-    f.frequency.linearRampToValueAtTime(1000, c.currentTime + 0.3);
+    f.frequency.setValueAtTime(70, c.currentTime);
+    f.frequency.linearRampToValueAtTime(500, c.currentTime + 0.3);
   
     bs.buffer = b;
     bs.loop = true;
@@ -193,6 +193,7 @@ window.stop = function stop() {
     clearTimeout(timer);
     t = 0;
 }
+
 
 
 //Firestore addition
