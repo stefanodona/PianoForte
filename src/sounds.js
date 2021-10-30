@@ -2,11 +2,58 @@
 // | S O U N D   S Y N T H E S I S   F I L E  |
 // --------------------------------------------
 
-c = new window.AudioContext();
+const c = new window.AudioContext();
+
+/* ------   K I C K   ------ */
+window.kick = function kick() {
+    var o = c.createOscillator();
+    var g = c.createGain();
+    var now = c.currentTime;
+    
+    o.frequency.setValueAtTime(80, now);
+    g.gain.setValueAtTime(2, now);
+
+    o.frequency.exponentialRampToValueAtTime(0.01, now + 0.3);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    
+    o.start();
+    o.stop(now + 0.5);
+
+    o.connect(g).connect(c.destination);
+}
+/* ------   K I C K   ------ */
+
+
+/* ------   S N A R E   ------ */
+window.snare = function snare() {
+    var g = c.createGain();
+    var f = c.createBiquadFilter();
+    var bs = c.createBufferSource();
+    var b = c.createBuffer(1, 4096, c.sampleRate);
+    var data = b.getChannelData(0);
+
+    for (var i = 0; i < 4096; i++) data[i] = Math.random();
+    
+    f.type = "highpass";
+    f.frequency.setValueAtTime(70, c.currentTime);
+    g.gain.setValueAtTime(3, c.currentTime);
+
+    g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
+    f.frequency.linearRampToValueAtTime(500, c.currentTime + 0.3);
+  
+    bs.buffer = b;
+    bs.loop = true;
+    
+    bs.start();
+    bs.stop(c.currentTime + 0.2);
+
+    bs.connect(g).connect(f).connect(c.destination);
+}
+/* ------   S N A R E   ------ */
 
 
 /* ------   H I  H A T   ------ */
-function hh() {
+window.hh = function hh() {
     var g = c.createGain();
     var f = c.createBiquadFilter();
     var bs = c.createBufferSource();
@@ -18,9 +65,8 @@ function hh() {
     
     g.gain.setValueAtTime(0.2, c.currentTime);
     g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
-  
     
-    f.type = "bandpass";
+    f.type = "highpass";
     f.frequency.value = 10000;
   
     bs.buffer = b;
@@ -35,7 +81,7 @@ function hh() {
 
 
 /* ------   C O W B E L L   ------ */
-function cowbell () {
+window.cowbell = function cowbell () {
     var o = c.createOscillator();
     var f = c.createBiquadFilter();
     var g = c.createGain();
@@ -59,7 +105,7 @@ function cowbell () {
 
 
 /* ------   T O M   ------ */
-function tom() {
+window.tom = function tom() {
     var o = c.createOscillator();
     var o2 = c.createOscillator();
     var g = c.createGain();
@@ -87,4 +133,4 @@ function tom() {
     o.connect(f).connect(g).connect(c.destination);
     o2.connect(g).connect(c.destination);
 }
-/* ------   T O M   ------ */
+/* ------   T O M   ------ */   

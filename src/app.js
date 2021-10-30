@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import './sounds.js'
 
 const c = new window.AudioContext();
 
@@ -116,76 +117,8 @@ function strip(number) {
 
 function render() {
     document.getElementById("counter").innerHTML = counter;
-    
 }
 console.log("hi")
-
-window.snare = function snare() {
-    var bs = c.createBufferSource();
-    var b = c.createBuffer(1, 4096, c.sampleRate);
-    var data = b.getChannelData(0);
-    for (var i = 0; i < 4096; i++) data[i] = Math.random();
-    var g = c.createGain();
-    g.gain.setValueAtTime(3, c.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
-  
-    var f = c.createBiquadFilter();
-    f.type = "highpass";
-    f.frequency.setValueAtTime(70, c.currentTime);
-    f.frequency.linearRampToValueAtTime(500, c.currentTime + 0.3);
-  
-    bs.buffer = b;
-    bs.loop = true;
-    bs.connect(g);
-    g.connect(f);
-    f.connect(c.destination);
-    bs.start();
-    bs.stop(c.currentTime + 0.2);
-  }
-
-window.kick = function kick() {
-    var now = c.currentTime;
-    var o = c.createOscillator();
-    o.frequency.setValueAtTime(80, now);
-    o.frequency.exponentialRampToValueAtTime(0.01, now + 0.3);
-    /* var o2 = c.createOscillator();
-    o2.type = "triangle";
-    o2.frequency.setValueAtTime(100, now);
-    o2.frequency.exponentialRampToValueAtTime(0.01, now + 0.5); */
-    var g = c.createGain();
-    g.gain.setValueAtTime(2, now);
-    g.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-    o.connect(g);
-    // o2.connect(g);
-    g.connect(c.destination);
-    o.start();
-    // o2.start();
-    o.stop(now + 0.5);
-    // o2.stop(now + 0.5);
-}
-
-window.hh = function hh() {
-    var bs = c.createBufferSource();
-    var b = c.createBuffer(1, 4096, c.sampleRate);
-    var data = b.getChannelData(0);
-    for (var i = 0; i < 4096; i++) data[i] = Math.random();
-    var g = c.createGain();
-    g.gain.setValueAtTime(0.2, c.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
-  
-    var f = c.createBiquadFilter();
-    f.type = "highpass";
-    f.frequency.value = 7000;
-    //f.frequency.linearRampToValueAtTime(1000, c.currentTime + 0.3);
-  
-    bs.buffer = b;
-    bs.loop = true;
-    bs.connect(g);
-    g.connect(f);
-    f.connect(c.destination);
-    bs.start();
-    bs.stop(c.currentTime + 0.05);
-  }
 
 var t = 0;
 const bpm = 90;
