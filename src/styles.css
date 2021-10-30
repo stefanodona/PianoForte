@@ -81,3 +81,8 @@ button {
 .active {
     background-color: greenyellow;
 }
+
+.seq {
+    width: 20px;
+    height: 20px;
+}

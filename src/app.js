@@ -49,7 +49,7 @@ window.play = function play(n) {
     }
       
     
-    o.connect(f).connect(g).connect(master);
+    o.connect(f).connect(g).connect(master)//.connect(reverb);
 
     o.frequency.value = 261.63 * Math.pow(2, n / 12);
     master.gain.setValueAtTime(1/unison, now);
@@ -177,6 +177,21 @@ window.toggleMod = function toggleMod() {
         document.querySelector('#flavour').classList.add("active");
     }
 }
+
+/* async function createReverb() {
+    let convolver = c.createConvolver();
+
+    // load impulse response from file
+    let response     = await fetch("../IRs/SC-MesHalfB212-C90-MD421-RoomB1.wav");
+    let arraybuffer  = await response.arrayBuffer();
+    convolver.buffer = await c.decodeAudioData(arraybuffer);
+
+    return convolver;
+}
+
+let reverb = await createReverb();
+
+reverb.connect(c.destination); */
 
 //Firestore addition
 
