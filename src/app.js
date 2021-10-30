@@ -231,6 +231,9 @@ window.stop = function stop() {
     isPlaying = false;
 }   
 
+var flavour = document.getElementById("flavour");
+flavour.onclick = function() {toggleMod();  };
+
 window.toggleMod = function toggleMod() {
     if (detuneMod) {
         detuneMod = false;
