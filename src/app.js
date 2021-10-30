@@ -14,7 +14,7 @@ master.connect(c.destination);
 const a = 0.01;
 const d = 0.02;
 const sl = 0.2;
-const st = 0.5;
+const st = 0.7;
 const r = 0.8;
 
 document.getElementById("AT").value = a;    // attack time
