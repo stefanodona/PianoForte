@@ -5,7 +5,7 @@ const c = new window.AudioContext();
 
 var counter = 0;
 var unison = 0;     // variable that give the number of unison notes to set the master gain
-var detuneMod = true;
+var detuneMod = false;
 
 var master = c.createGain();
 master.gain.value = 1;
@@ -39,10 +39,10 @@ window.play = function play(n) {
         o.type = "triangle"
         var osc = c.createOscillator();
         var oscGain = c.createGain();
-        oscGain.gain.value = 20;
+        oscGain.gain.value = 25;
         osc.connect(oscGain);
         oscGain.connect(o.detune);
-        osc.frequency.value = 2;
+        osc.frequency.value = 1.5;
         osc.type = "triangle"
         osc.start(); 
     }
@@ -126,7 +126,7 @@ window.snare = function snare() {
     var data = b.getChannelData(0);
     for (var i = 0; i < 4096; i++) data[i] = Math.random();
     var g = c.createGain();
-    g.gain.setValueAtTime(1, c.currentTime);
+    g.gain.setValueAtTime(3, c.currentTime);
     g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
   
     var f = c.createBiquadFilter();
@@ -146,22 +146,22 @@ window.snare = function snare() {
 window.kick = function kick() {
     var now = c.currentTime;
     var o = c.createOscillator();
-    o.frequency.setValueAtTime(100, now);
-    o.frequency.exponentialRampToValueAtTime(0.01, now + 0.5);
-    var o2 = c.createOscillator();
+    o.frequency.setValueAtTime(80, now);
+    o.frequency.exponentialRampToValueAtTime(0.01, now + 0.3);
+    /* var o2 = c.createOscillator();
     o2.type = "triangle";
     o2.frequency.setValueAtTime(100, now);
-    o2.frequency.exponentialRampToValueAtTime(0.01, now + 0.5);
+    o2.frequency.exponentialRampToValueAtTime(0.01, now + 0.5); */
     var g = c.createGain();
-    g.gain.setValueAtTime(1, now);
-    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    g.gain.setValueAtTime(2, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
     o.connect(g);
-    o2.connect(g);
+    // o2.connect(g);
     g.connect(c.destination);
     o.start();
-    o2.start();
+    // o2.start();
     o.stop(now + 0.5);
-    o2.stop(now + 0.5);
+    // o2.stop(now + 0.5);
 }
 
 window.hh = function hh() {
@@ -205,6 +205,14 @@ function WhenHH() {
     return (t%2 == 0 || t%4 == 3);
 }
 
+var isPlaying = false;
+var tunz = document.getElementById('tunz');
+tunz.onclick = function () {
+    if (!isPlaying) rhythm(); 
+    isPlaying = true; 
+}
+
+
 window.rhythm = function rhythm() {
     if (WhenKick()) kick();
     if (WhenSnare()) snare();
@@ -214,12 +222,13 @@ window.rhythm = function rhythm() {
     if (t%32==16) playD();
     if (t%32==24) playC();
     t++;
-    timer = setTimeout(rhythm, interval);
+    timer = setTimeout(rhythm, interval);    
 }
 
 window.stop = function stop() {
     clearTimeout(timer);
     t = 0;
+    isPlaying = false;
 }   
 
 window.toggleMod = function toggleMod() {
