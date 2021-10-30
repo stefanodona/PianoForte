@@ -36,7 +36,7 @@ window.snare = function snare() {
     
     f.type = "highpass";
     f.frequency.setValueAtTime(70, c.currentTime);
-    g.gain.setValueAtTime(3, c.currentTime);
+    g.gain.setValueAtTime(2, c.currentTime);
 
     g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
     f.frequency.linearRampToValueAtTime(500, c.currentTime + 0.3);
