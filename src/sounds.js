@@ -31,6 +31,8 @@ function hh() {
 
     bs.connect(g).connect(f).connect(c.destination);
 }
+/* ------   H I  H A T   ------ */
+
 
 /* ------   C O W B E L L   ------ */
 function cowbell () {
@@ -52,7 +54,9 @@ function cowbell () {
     
     o.connect(f).connect(g).connect(c.destination);
     
-  }
+}
+/* ------   C O W B E L L   ------ */
+
 
 /* ------   T O M   ------ */
 function tom() {
@@ -83,3 +87,4 @@ function tom() {
     o.connect(f).connect(g).connect(c.destination);
     o2.connect(g).connect(c.destination);
 }
+/* ------   T O M   ------ */
