@@ -77,3 +77,7 @@ button {
     height: min-content;
     padding: 10px;
 }
+
+.active {
+    background-color: greenyellow;
+}

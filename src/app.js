@@ -28,7 +28,7 @@ window.play = function play(n) {
     var now = c.currentTime;
     var g = c.createGain();
     var o = c.createOscillator();
-    o.type = "triangle";
+    o.type = "sine";
     var f = c.createBiquadFilter();
     f.type = "lowpass";
     f.frequency.setValueAtTime(1000, now);  
@@ -36,6 +36,7 @@ window.play = function play(n) {
 
     // detune modulation
     if (detuneMod==true) {
+        o.type = "triangle"
         var osc = c.createOscillator();
         var oscGain = c.createGain();
         oscGain.gain.value = 20;
@@ -222,8 +223,14 @@ window.stop = function stop() {
 }   
 
 window.toggleMod = function toggleMod() {
-    if (detuneMod) detuneMod = false;
-    else detuneMod = true;
+    if (detuneMod) {
+        detuneMod = false;
+        document.querySelector('#flavour').classList.remove("active");
+    }
+    else {
+        detuneMod = true;
+        document.querySelector('#flavour').classList.add("active");
+    }
 }
 
 //Firestore addition
