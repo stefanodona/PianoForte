@@ -126,9 +126,9 @@ const interval = 15000/bpm;
 const n = 2;
 let timer;
 
-function WhenKick(){
+/* function WhenKick(){
     return (t%8 == 0 || t%8 == 3);
-}
+} */
   
 function WhenSnare(){
     return t%8 == 4;
@@ -192,6 +192,43 @@ window.toggleMod = function toggleMod() {
 let reverb = await createReverb();
 
 reverb.connect(c.destination); */
+
+
+/* ------    S E Q U E N C E R   ------ */
+var seq = document.getElementById("sequencer");
+var len = seq.children.length;
+let arr = new Array(len).fill(0);
+
+var boxes = document.querySelectorAll(".box");
+boxes.forEach(setOn)
+
+function WhenKick () {
+    for (let i in arr) {
+      if (arr.at(i) == 1) {
+        if (t % len == i) return true;
+      }
+    }
+}
+
+function setOn(item) {
+    item.onclick = (e) => {
+      let a = Array.from(seq.children);
+      
+      if (e.target.classList.contains("active")) {
+        e.target.classList.remove("active");
+        arr[a.indexOf(e.target)] = 0;
+      }
+      else {
+        e.target.classList.add("active");
+        arr[a.indexOf(e.target)] = 1;
+      }
+      console.log(arr);
+    };  
+}
+
+/* ------    S E Q U E N C E R   ------ */
+
+
 
 //Firestore addition
 
