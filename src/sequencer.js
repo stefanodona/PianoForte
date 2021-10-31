@@ -1,4 +1,4 @@
-//import './app.js';
+import './app.js';
 /* ------    S E Q U E N C E R   ------ */
 
 var t = 0;
@@ -255,3 +255,5 @@ function render() {
   }
 
 }
+
+/*-----------------part for saving values of sequencer -------------------- */

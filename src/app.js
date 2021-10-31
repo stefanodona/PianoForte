@@ -240,3 +240,17 @@ async function createReverb() {
 
     return convolver;
 }
+var num = 0;
+window. saveSequencer =function saveSequencer() {
+    firebase
+      .firestore()
+      .collection("SeqSave")
+      .add({
+        Title: "nuovo salvataggio di prova",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then((ref) => {
+        console.log("Added doc with ID: ", ref.id);
+        // Added doc with ID:  ZzhIgLqELaoE3eSsOazu
+      });
+    }
