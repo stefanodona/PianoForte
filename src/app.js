@@ -133,13 +133,6 @@ const interval = 15000/bpm;
 const n = 2;
 let timer;
 
-/* function WhenKick(){
-    return (t%8 == 0 || t%8 == 3);
-} */
-  
-function WhenSnare(){
-    return t%8 == 4;
-}
 
 function WhenHH() {
     return (t%2 == 0 || t%4 == 3);
@@ -202,34 +195,82 @@ window.toggleRevMod = function toggleRevMod() {
 }
 
 /* ------    S E Q U E N C E R   ------ */
-var seq = document.getElementById("sequencer");
-var len = seq.children.length;
-let arr = new Array(len).fill(0);
+var kick_seq = document.getElementById("kick-sequencer");
+var snr_seq = document.getElementById("snare-sequencer");
+var len = kick_seq.children.length;
+let kick_arr = new Array(len).fill(0);
+let snr_arr = new Array(len).fill(0);
 
-var boxes = document.querySelectorAll(".box");
-boxes.forEach(setOn)
+var kick_boxes = document.querySelectorAll(".kick");
+var snr_boxes = document.querySelectorAll(".snr");
+kick_boxes.forEach(setOnKick)
+snr_boxes.forEach(setOnSnr)
 
+var seqButton = document.getElementById("seq-on");
+var seq_on = false
+seqButton.onclick = () => {
+    seq_on = !seq_on
+    seqButton.classList.toggle("active");
+}
+
+// funziona ma non mi piace il concetto
 function WhenKick () {
-    for (let i in arr) {
-      if (arr.at(i) == 1) {
-        if (t % len == i) return true;
-      }
+    if (seq_on) {
+        for (let i in kick_arr) {
+            if (kick_arr.at(i) == 1) {
+            if (t % len == i) return true;
+            }
+        }
+    }
+    else {
+        return (t%8 == 0 || t%8 == 3);
+    }
+    
+}
+
+function WhenSnare () {
+    if (seq_on) {
+        for (let i in snr_arr) {
+            if (snr_arr.at(i) == 1) {
+            if (t % len == i) return true;
+            }
+        }
+    }
+    else {
+        return t%8 == 4;
     }
 }
 
-function setOn(item) {
+
+function setOnKick(item) {
     item.onclick = (e) => {
-      let a = Array.from(seq.children);
+      let a = Array.from(kick_seq.children);
       
       if (e.target.classList.contains("active")) {
         e.target.classList.remove("active");
-        arr[a.indexOf(e.target)] = 0;
+        kick_arr[a.indexOf(e.target)] = 0;
       }
       else {
         e.target.classList.add("active");
-        arr[a.indexOf(e.target)] = 1;
+        kick_arr[a.indexOf(e.target)] = 1;
       }
-      console.log(arr);
+      console.log(kick_arr);
+    };  
+}
+
+function setOnSnr(item) {
+    item.onclick = (e) => {
+      let b = Array.from(snr_seq.children);
+      
+      if (e.target.classList.contains("active")) {
+        e.target.classList.remove("active");
+        snr_arr[b.indexOf(e.target)] = 0;
+      }
+      else {
+        e.target.classList.add("active");
+        snr_arr[b.indexOf(e.target)] = 1;
+      }
+      console.log(snr_arr);
     };  
 }
 
