@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import './sounds.js'
-
+import 'regenerator-runtime/runtime'
 const c = new window.AudioContext();
 
 var counter = 0;
@@ -49,7 +49,14 @@ window.play = function play(n) {
     }
       
     
-    o.connect(f).connect(g).connect(master);
+    o.connect(f).connect(g).connect(master)//.connect(reverb);
+
+    if(revOn) {
+        createReverb().then(reverb => {
+            o.connect(reverb);
+            reverb.connect(master);
+        })
+    }
 
     o.frequency.value = 261.63 * Math.pow(2, n / 12);
     master.gain.setValueAtTime(1/unison, now);
@@ -126,13 +133,6 @@ const interval = 15000/bpm;
 const n = 2;
 let timer;
 
-function WhenKick(){
-    return (t%8 == 0 || t%8 == 3);
-}
-  
-function WhenSnare(){
-    return t%8 == 4;
-}
 
 function WhenHH() {
     return (t%2 == 0 || t%4 == 3);
@@ -177,6 +177,104 @@ window.toggleMod = function toggleMod() {
         document.querySelector('#flavour').classList.add("active");
     }
 }
+
+var revButton = document.getElementById("rev");
+revButton.onclick = function() {toggleRevMod();  };
+var revOn = false;
+window.toggleRevMod = function toggleRevMod() {
+    if (revOn) {
+        revOn = false;
+        document.querySelector('#rev').classList.remove("active");
+    }
+    else {
+        revOn = true;
+        document.querySelector('#rev').classList.add("active");
+    }
+}
+
+/* ------    S E Q U E N C E R   ------ */
+var kick_seq = document.getElementById("kick-sequencer");
+var snr_seq = document.getElementById("snare-sequencer");
+var len = kick_seq.children.length;
+let kick_arr = new Array(len).fill(0);
+let snr_arr = new Array(len).fill(0);
+
+var kick_boxes = document.querySelectorAll(".kick");
+var snr_boxes = document.querySelectorAll(".snr");
+kick_boxes.forEach(setOnKick)
+snr_boxes.forEach(setOnSnr)
+
+var seqButton = document.getElementById("seq-on");
+var seq_on = false
+seqButton.onclick = () => {
+    seq_on = !seq_on
+    seqButton.classList.toggle("active");
+}
+
+// funziona ma non mi piace il concetto
+function WhenKick () {
+    if (seq_on) {
+        for (let i in kick_arr) {
+            if (kick_arr.at(i) == 1) {
+            if (t % len == i) return true;
+            }
+        }
+    }
+    else {
+        return (t%8 == 0 || t%8 == 3);
+    }
+    
+}
+
+function WhenSnare () {
+    if (seq_on) {
+        for (let i in snr_arr) {
+            if (snr_arr.at(i) == 1) {
+            if (t % len == i) return true;
+            }
+        }
+    }
+    else {
+        return t%8 == 4;
+    }
+}
+
+
+function setOnKick(item) {
+    item.onclick = (e) => {
+      let a = Array.from(kick_seq.children);
+      
+      if (e.target.classList.contains("active")) {
+        e.target.classList.remove("active");
+        kick_arr[a.indexOf(e.target)] = 0;
+      }
+      else {
+        e.target.classList.add("active");
+        kick_arr[a.indexOf(e.target)] = 1;
+      }
+      console.log(kick_arr);
+    };  
+}
+
+function setOnSnr(item) {
+    item.onclick = (e) => {
+      let b = Array.from(snr_seq.children);
+      
+      if (e.target.classList.contains("active")) {
+        e.target.classList.remove("active");
+        snr_arr[b.indexOf(e.target)] = 0;
+      }
+      else {
+        e.target.classList.add("active");
+        snr_arr[b.indexOf(e.target)] = 1;
+      }
+      console.log(snr_arr);
+    };  
+}
+
+/* ------    S E Q U E N C E R   ------ */
+
+
 
 //Firestore addition
 
@@ -236,3 +334,18 @@ firebase
 
 
 //https://www.freecodecamp.org/news/the-firestore-tutorial-for-2020-learn-by-example/
+
+
+async function createReverb() {
+    let convolver = c.createConvolver();
+
+    // load impulse response from file
+    let audioUrl = require("../IRs/SC-MesHalfB212-C90-MD421-RoomB1.wav");
+    let response     = await fetch(audioUrl);
+    console.log(response);
+    let arraybuffer  = await response.arrayBuffer();
+    console.log(arraybuffer);
+    convolver.buffer = await c.decodeAudioData(arraybuffer);
+
+    return convolver;
+}

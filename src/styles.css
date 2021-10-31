@@ -79,5 +79,11 @@ button {
 }
 
 .active {
-    background-color: greenyellow;
+    background-color: #6da0b4;
 }
+
+.box {
+    width: 20px;
+    height: 20px;
+}
+
