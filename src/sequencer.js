@@ -120,27 +120,29 @@ function setOnSnr(item) {
 /* ------    S E Q U E N C E R   ------ */
 
 
-var instruments = [ kick(), snare(), hh(), cowbell(), tom()]
+var instruments = [ kick(), snare(), hh(), cowbell(), tom()];
 console.table(instruments);
 let sequence = [];
 var numOfBeats = 16; //var that identifies the number most fast beats the sequencer plays
 instruments.forEach( () => {
   sequence.push(new Array(numOfBeats).fill(0));
 });
-/*
-console.table(sequence)
-for(i=0; i<instruments.length; i++) {
-  b = document.createElement("div")
-  b.classList.add("bar")
-  for(j = 0; j < numOfBeats; j++) {
-    b = document.createElement("div")
+
+console.table(sequence);
+
+for(var i=0; i<instruments.length; i++) {
+  var bar = document.createElement("div");
+  bar.classList.add("bar");
+  seq.append(bar);
+  for(var j = 0; j < numOfBeats; j++) {
+    var b = document.createElement("button")
     b.classList.add("box")
-    seq.append(b)
+    bar.append(b)
   }
 
 }
-*/
-window.rhythm = function rhythm() {
+
+window.rhythmPlay = function rhythmPlay() {
   for (let i = 0; i <numOfBeats; i = (i%sequence.length)+1) {
     // get the size of the inner array
     for(let j = 0; j <sequence.length; j = (j%sequence.length)+1) {
