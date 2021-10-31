@@ -46,12 +46,14 @@ input{
     border-color: brown;
     color: brown;
     border: solid 2px;
-    width: 100px;
+    width: 140px;
     height: 100px;
     margin: auto;
     line-height: 100px;
     text-align: center;
     border-radius: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 10px;
 }
 
 #reset {
