@@ -254,3 +254,18 @@ window. saveSequencer =function saveSequencer() {
         // Added doc with ID:  ZzhIgLqELaoE3eSsOazu
       });
     }
+
+    const seqConverter = {
+        toFirestore: (sequencer) => {
+            return {
+                sequence: sequencer.sequence,
+                instruments: sequencer.instruments
+            };
+
+        },
+        fromFirestore: (snapshot, options) => {
+            const data = snapshot.data(options);
+            return new Sequencer(data.sequence, data.instruments);
+        }
+    
+    }
