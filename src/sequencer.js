@@ -59,7 +59,8 @@ window.WhenSnare = function WhenSnare () {
 var isPlaying = false;
 var tunz = document.getElementById('tunz');
 tunz.onclick = function () {
-    if (!isPlaying) rhythm(); 
+    if (!isPlaying) rhythm();
+    //if (!isPlaying) rhythmPlay(); 
     isPlaying = true; 
 }
 
@@ -75,6 +76,7 @@ window.rhythm = function rhythm() {
     t++;
     timer = setTimeout(rhythm, interval);    
 }
+
 
 window.stop = function stop() {
     clearTimeout(timer);
@@ -122,7 +124,13 @@ function setOnSnr(item) {
 //sequencer setup
 
 
-var instruments = [ kick(), snare(), hh(), cowbell(), tom()]; //list of instruments to play
+var instruments = [ 
+  function() { kick()},
+  function() { snare()},
+  function() { hh()},
+  function() { tom()},
+  function() { cowbell()},
+]; //list of instruments to play
 console.table(instruments);
 let sequence = [];  //sequencer generated on instruments built
 var numOfBeats = 16; //var that identifies the number most fast beats the sequencer plays
@@ -186,15 +194,31 @@ Array.from(document.querySelector("#seq").children).forEach(child => {
   //console.log(child)
 });
 
-window.rhythmPlay = function rhythmPlay() {
-  for (let i = 0; i <numOfBeats; i = (i%numOfBeats)+1) {
+window.playNewSeq = function playNewSeq() {
+    var i = t%numOfBeats
+    console.log("i:"+i)
     // get the size of the inner array
     for(let j = 0; j <sequence.length; j++) {
-    if(sequence[i][j]>0) {
+      console.log("sequence.length:"+sequence.length)
+      console.log("j:"+j)
+      //console.log(sequence[j][i])
+    if(sequence[j][i]>0) {
+      //console.log(instruments[j])      
       instruments[j]();
     } 
-  }
 }
   t++;
-  timer = setTimeout(rhythm, interval);
+  timer = setTimeout(playNewSeq, interval);
 }
+var isPlayingNewSeq = false;
+var newSeq = document.getElementById('newSeq');
+newSeq.onclick = function () {
+    if (!isPlayingNewSeq) playNewSeq();
+    //if (!isPlaying) rhythmPlay(); 
+    isPlayingNewSeq = true; 
+}
+window.stopNewSeq = function stopNewSeq() {
+  clearTimeout(timer);
+  t = 0;
+  isPlayingNewSeq = false;
+}   
