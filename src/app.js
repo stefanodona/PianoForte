@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import './sounds.js'
-
+import 'regenerator-runtime/runtime'
 const c = new window.AudioContext();
 
 var counter = 0;
@@ -50,6 +50,13 @@ window.play = function play(n) {
       
     
     o.connect(f).connect(g).connect(master)//.connect(reverb);
+
+    if(revOn) {
+        createReverb().then(reverb => {
+            o.connect(reverb);
+            reverb.connect(master);
+        })
+    }
 
     o.frequency.value = 261.63 * Math.pow(2, n / 12);
     master.gain.setValueAtTime(1/unison, now);
@@ -178,21 +185,21 @@ window.toggleMod = function toggleMod() {
     }
 }
 
-/* async function createReverb() {
-    let convolver = c.createConvolver();
+ 
 
-    // load impulse response from file
-    let response     = await fetch("../IRs/SC-MesHalfB212-C90-MD421-RoomB1.wav");
-    let arraybuffer  = await response.arrayBuffer();
-    convolver.buffer = await c.decodeAudioData(arraybuffer);
-
-    return convolver;
+var revButton = document.getElementById("rev");
+revButton.onclick = function() {toggleRevMod();  };
+var revOn = false;
+window.toggleRevMod = function toggleRevMod() {
+    if (revOn) {
+        revOn = false;
+        document.querySelector('#rev').classList.remove("active");
+    }
+    else {
+        revOn = true;
+        document.querySelector('#rev').classList.add("active");
+    }
 }
-
-let reverb = await createReverb();
-
-reverb.connect(c.destination); */
-
 
 /* ------    S E Q U E N C E R   ------ */
 var seq = document.getElementById("sequencer");
@@ -288,3 +295,18 @@ firebase
 
 
 //https://www.freecodecamp.org/news/the-firestore-tutorial-for-2020-learn-by-example/
+
+
+async function createReverb() {
+    let convolver = c.createConvolver();
+
+    // load impulse response from file
+    let audioUrl = require("../IRs/SC-MesHalfB212-C90-MD421-RoomB1.wav");
+    let response     = await fetch(audioUrl);
+    console.log(response);
+    let arraybuffer  = await response.arrayBuffer();
+    console.log(arraybuffer);
+    convolver.buffer = await c.decodeAudioData(arraybuffer);
+
+    return convolver;
+}
