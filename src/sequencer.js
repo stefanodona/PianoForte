@@ -139,20 +139,26 @@ instruments.forEach( () => {
 });
 
 console.table(sequence);
+
+setupSequencer();
 /* building new sequencer pad */
-for(var i=0; i<instruments.length; i++) {
-  console.log(i)
-  var bar = document.createElement("div");
-  
-  //bar.classList.add("bar");
-  seq.append(bar);
-  for(var j = 0; j < numOfBeats; j++) {
-    var b = document.createElement("button")
-    b.classList.add("box")
-    b.innerText = ""+i+j
-    bar.append(b)
+
+//everything works but don't know why doesn't build the correct num of rows
+function setupSequencer() {
+  for(var i=0; i<instruments.length; i++) {
+    console.log("instruments:"+instruments.length)
+    var seqBar = document.createElement("div");
+    
+    //bar.classList.add("bar");
+    seq.append(seqBar);
+    for(var j = 0; j < numOfBeats; j++) {
+      var b = document.createElement("button")
+      b.classList.add("box")
+      //b.innerText = ""+i+j
+      seqBar.append(b)
+    }
+    
   }
-  
 }
 /* building new sequencer pad */
 
@@ -163,7 +169,7 @@ function setOnIns(item) {
     //console.log(e.target)
     //console.log(e.target.parentElement)
     let boxes = Array.from(seq.children[bars.indexOf(e.target.parentElement)].children);
-    console.log(boxes)
+    //console.log(boxes)
     
     if (e.target.classList.contains("active")) {
       e.target.classList.remove("active");
@@ -173,7 +179,7 @@ function setOnIns(item) {
       e.target.classList.add("active");
       sequence[bars.indexOf(e.target.parentElement)][boxes.indexOf(e.target)] = 1;
     }
-    console.table(sequence)
+    //console.table(sequence)
     
   };  
   
@@ -199,26 +205,53 @@ window.playNewSeq = function playNewSeq() {
     console.log("i:"+i)
     // get the size of the inner array
     for(let j = 0; j <sequence.length; j++) {
-      console.log("sequence.length:"+sequence.length)
-      console.log("j:"+j)
+      //console.log("sequence.length:"+sequence.length)
+      //console.log("j:"+j)
       //console.log(sequence[j][i])
-    if(sequence[j][i]>0) {
-      //console.log(instruments[j])      
-      instruments[j]();
-    } 
-}
+      if(sequence[j][i]>0) {
+        //console.log(instruments[j])      
+        instruments[j]();
+      } 
+  }
+  render(); 
   t++;
   timer = setTimeout(playNewSeq, interval);
 }
+
+
 var isPlayingNewSeq = false;
 var newSeq = document.getElementById('newSeq');
+
+//function to start sequencer playing 
 newSeq.onclick = function () {
     if (!isPlayingNewSeq) playNewSeq();
     //if (!isPlaying) rhythmPlay(); 
     isPlayingNewSeq = true; 
 }
+
+//function to stop sequencer playing 
 window.stopNewSeq = function stopNewSeq() {
   clearTimeout(timer);
   t = 0;
   isPlayingNewSeq = false;
 }   
+
+
+
+/*----------------visual part of sequencer------------------- */
+
+function render() {
+   //.forEach(child => {
+  
+    //console.log(child)
+  //});
+  var bars = Array.from(document.querySelector("#seq").children)
+  for(let i = 0; i <sequence.length; i++) { 
+    var boxes = Array.from(bars[i].children)
+    for(let j = 0; j <numOfBeats; j++) {
+      boxes[j].classList.toggle("actPlay", (sequence[i][j]>0 && t%numOfBeats==j));
+      boxes[j].classList.toggle("nonActPlay", (sequence[i][j]<=0 && t%numOfBeats==j));
+    } 
+  }
+
+}

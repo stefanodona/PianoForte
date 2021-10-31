@@ -82,6 +82,13 @@ button {
     background-color: #6da0b4;
 }
 
+.actPlay {
+    background-color: #c50808;
+}
+.nonActPlay {
+    background-color: #94c598;
+}
+
 .box {
     width: 20px;
     height: 20px;
