@@ -1,4 +1,4 @@
-import './app.js';
+//import './app.js';
 /* ------    S E Q U E N C E R   ------ */
 
 var t = 0;
@@ -119,33 +119,77 @@ function setOnSnr(item) {
 
 /* ------    S E Q U E N C E R   ------ */
 
+//sequencer setup
 
-var instruments = [ kick(), snare(), hh(), cowbell(), tom()];
+
+var instruments = [ kick(), snare(), hh(), cowbell(), tom()]; //list of instruments to play
 console.table(instruments);
-let sequence = [];
+let sequence = [];  //sequencer generated on instruments built
 var numOfBeats = 16; //var that identifies the number most fast beats the sequencer plays
 instruments.forEach( () => {
   sequence.push(new Array(numOfBeats).fill(0));
 });
 
 console.table(sequence);
-
+/* building new sequencer pad */
 for(var i=0; i<instruments.length; i++) {
+  console.log(i)
   var bar = document.createElement("div");
-  bar.classList.add("bar");
+  
+  //bar.classList.add("bar");
   seq.append(bar);
   for(var j = 0; j < numOfBeats; j++) {
     var b = document.createElement("button")
     b.classList.add("box")
+    b.innerText = ""+i+j
     bar.append(b)
   }
-
+  
 }
+/* building new sequencer pad */
+
+function setOnIns(item) {
+  item.onclick = (e) => {
+    let bars = Array.from(seq.children);
+    //console.log(bars)
+    //console.log(e.target)
+    //console.log(e.target.parentElement)
+    let boxes = Array.from(seq.children[bars.indexOf(e.target.parentElement)].children);
+    console.log(boxes)
+    
+    if (e.target.classList.contains("active")) {
+      e.target.classList.remove("active");
+      sequence[bars.indexOf(e.target.parentElement)][boxes.indexOf(e.target)] = 0;
+    }
+    else {
+      e.target.classList.add("active");
+      sequence[bars.indexOf(e.target.parentElement)][boxes.indexOf(e.target)] = 1;
+    }
+    console.table(sequence)
+    
+  };  
+  
+}
+//var kick_boxes = document.querySelectorAll(".kick");
+/*
+var seqBar = document.querySelector("#seq").children;
+console.log(seqBar)
+seqBar.forEach(
+  (list) => {
+    list.children.forEach(setOnIns)
+  }
+)*/
+
+//piece of code used to assign the right onClick function to the sequencer values 
+Array.from(document.querySelector("#seq").children).forEach(child => {
+  Array.from(child.children).forEach(setOnIns);
+  //console.log(child)
+});
 
 window.rhythmPlay = function rhythmPlay() {
-  for (let i = 0; i <numOfBeats; i = (i%sequence.length)+1) {
+  for (let i = 0; i <numOfBeats; i = (i%numOfBeats)+1) {
     // get the size of the inner array
-    for(let j = 0; j <sequence.length; j = (j%sequence.length)+1) {
+    for(let j = 0; j <sequence.length; j++) {
     if(sequence[i][j]>0) {
       instruments[j]();
     } 
