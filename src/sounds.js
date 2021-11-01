@@ -81,12 +81,12 @@ window.hh = function hh() {
 
 
 /* ------   C O W B E L L   ------ */
-window.cowbell = function cowbell () {
+window.cowbell = function cowbell() {
     var o = c.createOscillator();
     var f = c.createBiquadFilter();
     var g = c.createGain();
     var now = c.currentTime;
-    
+    var d = 0.1;
     o.type = "square";
     f.type = "bandpass";
     o.frequency.value = 800;
