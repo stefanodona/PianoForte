@@ -127,8 +127,8 @@ function setOnSnr(item) {
  //list of instruments to play
 //console.table(instruments);
 class Sequencer {
-  constructor (sequence, instruments,numOfBeats) {
-    this.sequence = sequence;
+  constructor (instruments,numOfBeats) {
+    //this.sequence = sequence;
     this.instruments = instruments;
     this.numOfBeats = numOfBeats;  
     let sequence = [];
