@@ -138,11 +138,11 @@ class Sequencer {
 
 window.sequencer = new Sequencer( [], //sequencer generated on instruments built
   [ 
-    {name: "kick", function: function kickBoh() {kick()}},
-    {name: "snare", function: function snare() {snare()}},
-    {name: "hh", function: function hh() {hh()}},
-    {name: "tom", function: function tom() {tom()}},
-    {name: "cowbell", function: function cowbell() {cowbell()}},
+    {name: "kick", function: function () {kick()}},
+    {name: "snare", function: function () {snare()}},
+    {name: "hh", function: function () {hh()}},
+    {name: "tom", function: function () {tom()}},
+    {name: "cowbell", function: function () {cowbell()}},
   ]
 )
 console.log("I am here now")
