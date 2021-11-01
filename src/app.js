@@ -285,8 +285,11 @@ window. saveSequencer =function saveSequencer() {
 
         fromFirestore: (snapshot, options) => {
             const data = snapshot.data(options);
+            sequence = []
             for(let i = 0; i <data.sequence.length; i++){
-                
+                let values = data.sequence[i].split('_')
+                if(values.length!=data.numOfBeats) console.error("something doesn't work on sequencer firestore handling");
+                sequence.push(values)
             }
             return new Sequencer(data.sequence, data.instruments);
         }
