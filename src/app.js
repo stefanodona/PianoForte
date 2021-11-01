@@ -269,10 +269,13 @@ window. saveSequencer =function saveSequencer() {
                 sequence: fsSequence,
                 //instruments: sequencer.instruments
             };
-
         },
+
         fromFirestore: (snapshot, options) => {
             const data = snapshot.data(options);
+            for(let i = 0; i <data.sequence.length; i++){
+                
+            }
             return new Sequencer(data.sequence, data.instruments);
         }
     
@@ -282,3 +285,8 @@ window. saveSequencer =function saveSequencer() {
     boxesStr += 12;
     boxesStr += "_";
     console.log(boxesStr)
+    var kickToString = sequencer.instruments[0].function.toString()
+    console.log("function kick toString: ", kickToString)
+    eval(kickToString)
+    kickBoh()
+

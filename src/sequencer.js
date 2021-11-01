@@ -138,17 +138,17 @@ class Sequencer {
 
 window.sequencer = new Sequencer( [], //sequencer generated on instruments built
   [ 
-    {name: "kick", function: function () {kick()}},
-    {name: "snare", function: function () {snare()}},
-    {name: "hh", function: function () {hh()}},
-    {name: "tom", function: function () {tom()}},
-    {name: "cowbell", function: function () {cowbell()}},
+    {name: "kick", function: function kickBoh() {kick()}},
+    {name: "snare", function: function snare() {snare()}},
+    {name: "hh", function: function hh() {hh()}},
+    {name: "tom", function: function tom() {tom()}},
+    {name: "cowbell", function: function cowbell() {cowbell()}},
   ]
 )
 console.log("I am here now")
 console.table(sequencer.instruments);
 //let sequence = [];  //sequencer generated on instruments built
-var numOfBeats = 16; //var that identifies the number most fast beats the sequencer plays
+var numOfBeats = 32; //var that identifies the number most fast beats the sequencer plays
 sequencer.instruments.forEach( () => {
   sequencer.sequence.push(new Array(numOfBeats).fill(0));
 });
