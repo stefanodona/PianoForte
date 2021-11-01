@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import './sounds.js'
 import 'regenerator-runtime/runtime'
+
 const c = new window.AudioContext();
 
 var counter = 0;
@@ -53,8 +54,10 @@ window.play = function play(n) {
 
     if(revOn) {
         createReverb().then(reverb => {
+            var revGain = c.createGain();
+            revGain.gain.value = 0.4;
             o.connect(reverb);
-            reverb.connect(master);
+            reverb.connect(revGain).connect(master);
         })
     }
 
@@ -143,6 +146,7 @@ var tunz = document.getElementById('tunz');
 tunz.onclick = function () {
     if (!isPlaying) rhythm(); 
     isPlaying = true; 
+    tunz.classList.add("active")
 }
 
 
@@ -162,6 +166,7 @@ window.stop = function stop() {
     clearTimeout(timer);
     t = 0;
     isPlaying = false;
+    tunz.classList.remove("active")
 }   
 
 var flavour = document.getElementById("flavour");
@@ -340,7 +345,7 @@ async function createReverb() {
     let convolver = c.createConvolver();
 
     // load impulse response from file
-    let audioUrl = require("../IRs/SC-MesHalfB212-C90-MD421-RoomB1.wav");
+    let audioUrl = require("../IRs/Large Long Echo Hall.wav");
     let response     = await fetch(audioUrl);
     console.log(response);
     let arraybuffer  = await response.arrayBuffer();

@@ -39,7 +39,7 @@ window.snare = function snare() {
     g.gain.setValueAtTime(3, c.currentTime);
 
     g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
-    f.frequency.linearRampToValueAtTime(500, c.currentTime + 0.3);
+    f.frequency.exponentialRampToValueAtTime(100, c.currentTime + 0.01);
   
     bs.buffer = b;
     bs.loop = true;
