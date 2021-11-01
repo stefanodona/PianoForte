@@ -280,7 +280,7 @@ window. saveSequencer =function saveSequencer() {
         }
     
     }
-
+    /*
     var boxesStr = "";
     boxesStr += 12;
     boxesStr += "_";
@@ -289,4 +289,4 @@ window. saveSequencer =function saveSequencer() {
     console.log("function kick toString: ", kickToString)
     eval(kickToString)
     kickBoh()
-
+    */
