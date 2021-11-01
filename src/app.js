@@ -256,12 +256,16 @@ window.downloadSequencer =function downloadSequencer() {
         });
         
 }
-    
     window.saveSequencer =function saveSequencer() {
+        var possibleName = prompt("Please enter the name of the snapshot", "Harry Potter");
+        var name = "John Doe"
+        if (possibleName != null) {
+            name = possibleName;
+        } 
         firebase
           .firestore()
           .collection("SeqSave")
-          .add(seqConverter.toFirestore(sequencer))
+          .add(seqConverter.toFirestore(sequencer, name))
           .then((ref) => {
             console.log("Added doc with ID: ", ref.id);
             // Added doc with ID:  ZzhIgLqELaoE3eSsOazu
@@ -274,7 +278,7 @@ window.downloadSequencer =function downloadSequencer() {
 
 
     const seqConverter = {
-        toFirestore: (sequencer) => {
+        toFirestore: (sequencer,name) => {
             var fsSequence = []
             //convert array of numbers used to program the sequencer into a string of numbers parsed by underscore
             for(let i = 0; i <sequencer.sequence.length; i++){
@@ -296,7 +300,7 @@ window.downloadSequencer =function downloadSequencer() {
                 fsInstruments.push(toInsert)    
             }
             return {
-                Title: "nuovo salvataggio di prova",
+                Title: name,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 sequence: fsSequence,
                 instruments: fsInstruments,
@@ -331,5 +335,7 @@ window.downloadSequencer =function downloadSequencer() {
         }
     
     }
+
+    
     
     
