@@ -127,15 +127,21 @@ function setOnSnr(item) {
  //list of instruments to play
 //console.table(instruments);
 class Sequencer {
-  constructor (sequence, instruments) {
+  constructor (instruments,numOfBeats) {
+    this.instruments = instruments;
+    this.numOfBeats = numOfBeats;  
+    let sequence = [];
+    instruments.forEach( () => {
+        sequence.push(new Array(numOfBeats).fill(0));
+    });
       this.sequence = sequence;
-      this.instruments = instruments;
+      
   }
   toString() {
-      return this.sequence + ', ' + this.instruments;
+      return this.sequence + ', ' + this.instruments+", "+this.numOfBeats;
   }
 }
-
+/*
 window.sequencer = new Sequencer( [], //sequencer generated on instruments built
   [ 
     {name: "kick", function: function () {kick()}},
@@ -145,13 +151,26 @@ window.sequencer = new Sequencer( [], //sequencer generated on instruments built
     {name: "cowbell", function: function () {cowbell()}},
   ]
 )
+*/
+
+
+window.sequencer = new Sequencer(  //sequencer generated on instruments built
+  [ 
+    {name: "kick", function: kick},
+    {name: "snare", function: snare},
+    {name: "hh", function: hh},
+    {name: "tom", function: tom},
+    {name: "cowbell", function: cowbell},
+  ],
+  32 //var that identifies the number most fast beats the sequencer plays
+)
+
+
 console.log("I am here now")
 console.table(sequencer.instruments);
 //let sequence = [];  //sequencer generated on instruments built
-var numOfBeats = 32; //var that identifies the number most fast beats the sequencer plays
-sequencer.instruments.forEach( () => {
-  sequencer.sequence.push(new Array(numOfBeats).fill(0));
-});
+
+
 
 console.table(sequencer.sequence);
 
@@ -166,7 +185,7 @@ function setupSequencer() {
     
     //bar.classList.add("bar");
     seq.append(seqBar);
-    for(var j = 0; j < numOfBeats; j++) {
+    for(var j = 0; j < sequencer.numOfBeats; j++) {
       var b = document.createElement("button")
       b.classList.add("box")
       //b.innerText = ""+i+j
@@ -216,7 +235,7 @@ Array.from(document.querySelector("#seq").children).forEach(child => {
 });
 
 window.playNewSeq = function playNewSeq() {
-    var i = t%numOfBeats
+    var i = t%sequencer.numOfBeats
     console.log("i:"+i)
     // get the size of the inner array
     for(let j = 0; j <sequencer.sequence.length; j++) {
@@ -264,9 +283,9 @@ function render() {
   var bars = Array.from(document.querySelector("#seq").children)
   for(let i = 0; i <sequencer.sequence.length; i++) { 
     var boxes = Array.from(bars[i].children)
-    for(let j = 0; j <numOfBeats; j++) {
-      boxes[j].classList.toggle("actPlay", (sequencer.sequence[i][j]>0 && t%numOfBeats==j));
-      boxes[j].classList.toggle("nonActPlay", (sequencer.sequence[i][j]<=0 && t%numOfBeats==j));
+    for(let j = 0; j <sequencer.numOfBeats; j++) {
+      boxes[j].classList.toggle("actPlay", (sequencer.sequence[i][j]>0 && t%sequencer.numOfBeats==j));
+      boxes[j].classList.toggle("nonActPlay", (sequencer.sequence[i][j]<=0 && t%sequencer.numOfBeats==j));
     } 
   }
 

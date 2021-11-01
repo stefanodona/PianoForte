@@ -255,6 +255,7 @@ window. saveSequencer =function saveSequencer() {
     const seqConverter = {
         toFirestore: (sequencer) => {
             var fsSequence = []
+            //convert array of numbers used to program the sequencer into a string of numbers parsed by underscore
             for(let i = 0; i <sequencer.sequence.length; i++){
                     var boxesStr = "";
                     for(let j = 0; j<sequencer.sequence[i].length; j++) {
@@ -263,11 +264,22 @@ window. saveSequencer =function saveSequencer() {
                     }
                     fsSequence.push(boxesStr)
                 }
+
+            //converting array of object used to specify instruments functions in array of objects made by strings 
+            var fsInstruments = [];
+            for(let i = 0; i < sequencer.instruments.length; i++) {
+                var toInsert = {
+                    name: sequencer.instruments[i].name,
+                    function: sequencer.instruments[i].function.name
+                } 
+                fsInstruments.push(toInsert)    
+            }
             return {
                 Title: "nuovo salvataggio di prova",
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 sequence: fsSequence,
-                //instruments: sequencer.instruments
+                instruments: fsInstruments,
+                numOfBeats: sequencer.numOfBeats,
             };
         },
 
@@ -280,13 +292,14 @@ window. saveSequencer =function saveSequencer() {
         }
     
     }
-    /*
+    
     var boxesStr = "";
     boxesStr += 12;
     boxesStr += "_";
     console.log(boxesStr)
-    var kickToString = sequencer.instruments[0].function.toString()
+    var kickToString = "kick()"
     console.log("function kick toString: ", kickToString)
-    eval(kickToString)
-    kickBoh()
-    */
+    //eval(kickToString);
+    window.boh = new Function(kickToString);
+    
+    
