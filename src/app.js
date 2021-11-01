@@ -1,8 +1,9 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import './sounds.js'
-import './sequencer.js'
-import 'regenerator-runtime/runtime'
+import './liveSequencer.js';
+import 'regenerator-runtime/runtime';
+const Sequencer = require("./Sequencer.js");
 const c = new window.AudioContext();
 
 var counter = 0;
@@ -240,17 +241,37 @@ async function createReverb() {
 
     return convolver;
 }
-var num = 0;
-window. saveSequencer =function saveSequencer() {
+
+/*-----------------part for saving values of sequencer -------------------- */
+window.downloadSequencer =function downloadSequencer() {
+    var docId = "xTYtYhoUX56IY5Uvhp62"
     firebase
-      .firestore()
-      .collection("SeqSave")
-      .add(seqConverter.toFirestore(sequencer))
-      .then((ref) => {
-        console.log("Added doc with ID: ", ref.id);
-        // Added doc with ID:  ZzhIgLqELaoE3eSsOazu
-      });
-    }
+        .firestore()
+        .collection("SeqSave")
+        .doc(docId)
+        .onSnapshot((snapshot) => {
+            console.log("sequencer downloaded:", snapshot.data());
+            window.sequencer = seqConverter.fromFirestore(snapshot)
+            renderSequencer();
+        });
+        
+}
+    
+    window.saveSequencer =function saveSequencer() {
+        firebase
+          .firestore()
+          .collection("SeqSave")
+          .add(seqConverter.toFirestore(sequencer))
+          .then((ref) => {
+            console.log("Added doc with ID: ", ref.id);
+            // Added doc with ID:  ZzhIgLqELaoE3eSsOazu
+          });
+        }
+
+
+
+
+
 
     const seqConverter = {
         toFirestore: (sequencer) => {
@@ -285,24 +306,30 @@ window. saveSequencer =function saveSequencer() {
 
         fromFirestore: (snapshot, options) => {
             const data = snapshot.data(options);
-            sequence = []
+            console.log(snapshot)
+            //conversion of sequence from firestore 
+            var fsSequence = []
             for(let i = 0; i <data.sequence.length; i++){
                 let values = data.sequence[i].split('_')
                 if(values.length!=data.numOfBeats) console.error("something doesn't work on sequencer firestore handling");
-                sequence.push(values)
+                var numValues = values.map(Number)
+                fsSequence.push(numValues)
             }
-            return new Sequencer(data.sequence, data.instruments);
+
+            //conversion of instruments from firestore
+            var fsInstruments = []
+            for(let i = 0; i <data.instruments.length; i++){
+                let ins = {
+                    name: data.instruments[i].name,
+                    function: Function(data.instruments[i].function+"()")
+                }
+                //if(values.length!=data.numOfBeats) console.error("something doesn't work on sequencer firestore handling");
+                
+                fsInstruments.push(ins)
+            }
+            return new Sequencer(fsSequence, fsInstruments,data.numOfBeats);
         }
     
     }
-    
-    var boxesStr = "";
-    boxesStr += 12;
-    boxesStr += "_";
-    console.log(boxesStr)
-    var kickToString = "kick()"
-    console.log("function kick toString: ", kickToString)
-    //eval(kickToString);
-    window.boh = new Function(kickToString);
     
     
