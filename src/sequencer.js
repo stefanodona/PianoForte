@@ -136,16 +136,17 @@ class Sequencer {
   }
 }
 
-var sequencer = new Sequencer( [], //sequencer generated on instruments built
+window.sequencer = new Sequencer( [], //sequencer generated on instruments built
   [ 
-    function() { kick()},
-    function() { snare()},
-    function() { hh()},
-    function() { tom()},
-    function() { cowbell()},
+    {name: "kick", function: function () {kick()}},
+    {name: "snare", function: function () {snare()}},
+    {name: "hh", function: function () {hh()}},
+    {name: "tom", function: function () {tom()}},
+    {name: "cowbell", function: function () {cowbell()}},
   ]
 )
-
+console.log("I am here now")
+console.table(sequencer.instruments);
 //let sequence = [];  //sequencer generated on instruments built
 var numOfBeats = 16; //var that identifies the number most fast beats the sequencer plays
 sequencer.instruments.forEach( () => {
@@ -224,7 +225,7 @@ window.playNewSeq = function playNewSeq() {
       //console.log(sequence[j][i])
       if(sequencer.sequence[j][i]>0) {
         //console.log(instruments[j])      
-        sequencer.instruments[j]();
+        sequencer.instruments[j].function();
       } 
   }
 

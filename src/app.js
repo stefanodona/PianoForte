@@ -245,10 +245,7 @@ window. saveSequencer =function saveSequencer() {
     firebase
       .firestore()
       .collection("SeqSave")
-      .add({
-        Title: "nuovo salvataggio di prova",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      })
+      .add(seqConverter.toFirestore(sequencer))
       .then((ref) => {
         console.log("Added doc with ID: ", ref.id);
         // Added doc with ID:  ZzhIgLqELaoE3eSsOazu
@@ -257,9 +254,20 @@ window. saveSequencer =function saveSequencer() {
 
     const seqConverter = {
         toFirestore: (sequencer) => {
+            var fsSequence = []
+            for(let i = 0; i <sequencer.sequence.length; i++){
+                    var boxesStr = "";
+                    for(let j = 0; j<sequencer.sequence[i].length; j++) {
+                        boxesStr += sequencer.sequence[i][j];
+                        if(j<sequencer.sequence[i].length -1) boxesStr += "_";
+                    }
+                    fsSequence.push(boxesStr)
+                }
             return {
-                sequence: sequencer.sequence,
-                instruments: sequencer.instruments
+                Title: "nuovo salvataggio di prova",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                sequence: fsSequence,
+                //instruments: sequencer.instruments
             };
 
         },
@@ -269,3 +277,8 @@ window. saveSequencer =function saveSequencer() {
         }
     
     }
+
+    var boxesStr = "";
+    boxesStr += 12;
+    boxesStr += "_";
+    console.log(boxesStr)
