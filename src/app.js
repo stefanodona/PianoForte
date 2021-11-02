@@ -232,8 +232,9 @@ async function createReverb() {
     let convolver = c.createConvolver();
 
     // load impulse response from file
-    let audioUrl = require("../IRs/SC-MesHalfB212-C90-MD421-RoomB1.wav");
-    let response     = await fetch(audioUrl);
+    //let audioUrl = require("../IRs/SC-MesHalfB212-C90-MD421-RoomB1.wav");
+    const audioURL = new URL('../IRs/SC-MesHalfB212-C90-MD421-RoomB1.wav', import.meta.url);
+    let response = await fetch(audioURL);
     console.log(response);
     let arraybuffer  = await response.arrayBuffer();
     console.log(arraybuffer);
