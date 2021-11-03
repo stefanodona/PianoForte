@@ -130,12 +130,6 @@ function render() {
 console.log("hi")
 
 
-
-
-
-
-
-
 var flavour = document.getElementById("flavour");
 flavour.onclick = function() {toggleMod();  };
 
@@ -163,8 +157,6 @@ window.toggleRevMod = function toggleRevMod() {
         document.querySelector('#rev').classList.add("active");
     }
 }
-
-
 
 
 //Firestore addition

@@ -6,7 +6,32 @@ var t = 0;
 const bpm = 90;
 const interval = 15000/bpm;
 let timer;
-var kick_seq = document.getElementById("kick-sequencer");
+
+
+var vel = document.getElementById("atkVel");
+document.getElementById("kick").onclick = () => {kick(vel.value)} ;
+document.getElementById("snare").onclick = () => {snare(vel.value)} ;
+
+var kickMsg = 0x90007F;
+kickMsg >>>= 0;
+
+// function to convert an Hexadecimal Number to a 32bit array in order
+// to access every bit of the MIDI message
+function MsgToArray (msg) {
+  var arr = Array.from(msg.toString(2));
+  var zeros = new Array(24-arr.length).fill(0);
+  return 
+}
+
+function extractVelocity (msg) {
+  var arr = Array.from(msg.toString(2));
+  var zeros = new Array(32-arr.length).fill(0);
+  var velocityBin = zeros.concat(arr).slice(16, 25);
+  return parseInt(velocityBin.join(""), 2);
+}
+
+
+/* var kick_seq = document.getElementById("kick-sequencer");
 var snr_seq = document.getElementById("snare-sequencer");
 var len = kick_seq.children.length;
 let kick_arr = new Array(len).fill(0);
@@ -16,7 +41,7 @@ let snr_arr = new Array(len).fill(0);
 var kick_boxes = document.querySelectorAll(".kick");
 var snr_boxes = document.querySelectorAll(".snr");
 kick_boxes.forEach(setOnKick)
-snr_boxes.forEach(setOnSnr)
+snr_boxes.forEach(setOnSnr) */
 
 var seqButton = document.getElementById("seq-on");
 var seq_on = false
@@ -67,9 +92,9 @@ tunz.onclick = function () {
 
 
 window.rhythm = function rhythm() {
-    if (WhenKick()) kick();
-    if (WhenSnare()) snare();
-    if (WhenHH()) hh();
+    if (WhenKick()) kick(vel.value);
+    if (WhenSnare()) snare(vel.value);
+    if (WhenHH()) hh(vel.value);
     if (t%32==0) playC();
     if (t%32==8) playG();
     if (t%32==16) playD();
@@ -123,20 +148,6 @@ function setOnSnr(item) {
 /* ------    S E Q U E N C E R   ------ */
 
 //sequencer setup
-
-
- 
-/*
-window.sequencer = new Sequencer( [], //sequencer generated on instruments built
-  [ 
-    {name: "kick", function: function () {kick()}},
-    {name: "snare", function: function () {snare()}},
-    {name: "hh", function: function () {hh()}},
-    {name: "tom", function: function () {tom()}},
-    {name: "cowbell", function: function () {cowbell()}},
-  ]
-)
-*/
 
 
 window.sequencer = Sequencer.fromScratch(  //sequencer generated on instruments built

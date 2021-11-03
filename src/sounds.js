@@ -5,13 +5,16 @@
 const c = new window.AudioContext();
 
 /* ------   K I C K   ------ */
-window.kick = function kick() {
+// vel in [0, 127]
+
+window.kick = function kick(vel) {
+    var atkLevel = vel/127;
     var o = c.createOscillator();
     var g = c.createGain();
     var now = c.currentTime;
     
     o.frequency.setValueAtTime(80, now);
-    g.gain.setValueAtTime(2, now);
+    g.gain.setValueAtTime(2*atkLevel, now);
 
     o.frequency.exponentialRampToValueAtTime(0.01, now + 0.3);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
@@ -25,7 +28,8 @@ window.kick = function kick() {
 
 
 /* ------   S N A R E   ------ */
-window.snare = function snare() {
+window.snare = function snare(vel) {
+    var atkLevel = vel/127;
     var g = c.createGain();
     var f = c.createBiquadFilter();
     var bs = c.createBufferSource();
@@ -36,10 +40,10 @@ window.snare = function snare() {
     
     f.type = "highpass";
     f.frequency.setValueAtTime(70, c.currentTime);
-    g.gain.setValueAtTime(2, c.currentTime);
+    g.gain.setValueAtTime(2*atkLevel, c.currentTime);
 
     g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
-    f.frequency.linearRampToValueAtTime(500, c.currentTime + 0.3);
+    f.frequency.linearRampToValueAtTime(500*atkLevel, c.currentTime + 0.3);
   
     bs.buffer = b;
     bs.loop = true;
@@ -53,7 +57,8 @@ window.snare = function snare() {
 
 
 /* ------   H I  H A T   ------ */
-window.hh = function hh() {
+window.hh = function hh(vel) {
+    var atkLevel = vel/127;
     var g = c.createGain();
     var f = c.createBiquadFilter();
     var bs = c.createBufferSource();
@@ -63,7 +68,7 @@ window.hh = function hh() {
     
     for (var i = 0; i < 4096; i++) data[i] = Math.random();
     
-    g.gain.setValueAtTime(0.2, c.currentTime);
+    g.gain.setValueAtTime(0.5*atkLevel, c.currentTime);
     g.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.3);
     
     f.type = "highpass";
