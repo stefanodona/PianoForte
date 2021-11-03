@@ -13,7 +13,6 @@ document.getElementById("kick").onclick = () => {kick(vel.value)} ;
 document.getElementById("snare").onclick = () => {snare(vel.value)} ;
 
 var kickMsg = 0x90007F;
-kickMsg >>>= 0;
 
 // function to convert an Hexadecimal Number to a 32bit array in order
 // to access every bit of the MIDI message
@@ -24,13 +23,15 @@ function MsgToArray (msg) {
 }
 
 function extractVelocity (msg) {
+  msg >>>= 0;
   var arr = Array.from(msg.toString(2));
-  var zeros = new Array(32-arr.length).fill(0);
-  var velocityBin = zeros.concat(arr).slice(16, 25);
+  // var zeros = new Array(24-arr.length).fill(0);
+  // var velocityBin = zeros.concat(arr).slice(16, 25);
+  var velocityBin = arr.slice(16, 25); 
   return parseInt(velocityBin.join(""), 2);
 }
 
-
+console.log(extractVelocity(kickMsg))
 /* var kick_seq = document.getElementById("kick-sequencer");
 var snr_seq = document.getElementById("snare-sequencer");
 var len = kick_seq.children.length;
