@@ -5,6 +5,7 @@
     <title>My First Parcel App</title>
     <link rel="stylesheet" href="styles.css" />
     <script type="module" src="app.js"></script>
+    <!--<script type="module" src="sequencer.js"></script>-->
     <!-- <script type="module" src="oscillator.js"></script> -->
   </head>
   <body>
@@ -63,8 +64,12 @@
   <button id="stop" onclick="stop()">STOP</button>
   <audio src="../IRs/SC-MesHalfB212-C90-MD421-RoomB1.wav" id="roomIR"></audio>
   <button id="flavour">Flavour</button>
+<<<<<<< HEAD
   <button id="rev">Reverb</button>
 
+=======
+  
+>>>>>>> parcel2
   <div id="seq-container">
     <div id="kick-sequencer"> KCK SEQ
       <button class="kick box"></button>
@@ -90,7 +95,24 @@
 
     <button id="seq-on">SEQ</button>
   </div>
-  
-  
+   
+
+   <div id= "seq"></div>
+
+   <button id="newSeq">newSeq</button>
+  <button id="stopNewSeq" onclick="stopNewSeq()">STOP</button>
+  <button id=rev>REV</button>
+  <button id=saveSeqPattern onclick="saveSequencer()">Save sequencer Pattern</button>
+  <button id=downLoadSeqPattern onclick="downloadSequencer()">download Sequencer Pattern</button>
+  <button id=downloadKick onclick="boh()">downloadKick</button>
+  <form id="kit-selector">
+    <label for="kit"></label>
+    <select name="kit" id="kit">
+      <option>Hip Hop</option>
+      <option>Rock</option>
+      <option>Jazz</option>
+      <option>Funk</option>
+    </select>
+  </form>
   </body>
 </html>
