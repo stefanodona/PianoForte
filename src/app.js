@@ -336,16 +336,35 @@ window.downloadSequencer =function downloadSequencer() {
         }
     
     }
-    key="763fb7be9fa7445b836c7d0967859cda"
+    var key="763fb7be9fa7445b836c7d0967859cda"
 
 
 window.spoonacularQueryRecipeList = async function() {
+    
     const spoonURL = new URL("https://api.spoonacular.com/recipes/complexSearch?apiKey="+key, import.meta.url);
+    /*
     let response = await fetch(spoonURL)
         .then(response => response.json())
         .then(data => console.log(data));;
     //console.log(response)
+    */
+    fetch(spoonURL, {
+        method: "GET", // "GET/POST"
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //body: JSON.stringify(data)
+    })
+    .then(r => r.json())
+    .then(r => {
+       console.log('Response', r) // You will get JSON response here.
+    }).catch(error => console.error('Error', error))
+
 }
+
+
+
+
 
 window.spoonacularQueryGetRecipe = async function() {
     const spoonURL = new URL("https://api.spoonacular.com/recipes/complexSearch?apiKey="+key, import.meta.url);
