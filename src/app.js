@@ -378,9 +378,15 @@ window.spoonacularQueryGetRecipe = async function() {
             console.log(data)
             console.table(data.results)
         });
-    
+      
 }
-    
+
+
+//       ||
+//   //  ||  \\
+//  ||   ||   ||
+//  ||        ||
+//   \\ ____ //
 
 /*
 console.log("ciaone")
