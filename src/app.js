@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+
 import 'firebase/firestore';
 import './sounds.js'
 import './liveSequencer.js';
@@ -335,7 +336,23 @@ window.downloadSequencer =function downloadSequencer() {
         }
     
     }
+    key="763fb7be9fa7445b836c7d0967859cda"
 
-    
+
+window.spoonacularQueryRecipeList = async function() {
+    const spoonURL = new URL("https://api.spoonacular.com/recipes/complexSearch?apiKey="+key, import.meta.url);
+    let response = await fetch(spoonURL)
+        .then(response => response.json())
+        .then(data => console.log(data));;
+    //console.log(response)
+}
+
+window.spoonacularQueryGetRecipe = async function() {
+    const spoonURL = new URL("https://api.spoonacular.com/recipes/complexSearch?apiKey="+key, import.meta.url);
+    let response = await fetch(spoonURL)
+        .then(response => response.json())
+        .then(data => console.log(data));;
+    //console.log(response)
+}
     
     

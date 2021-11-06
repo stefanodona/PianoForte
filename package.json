@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/stefanodona/PianoForte#readme",
   "dependencies": {
-    "firebase": "^8.0.0"
+    "babel-cli": "^6.26.0",
+    "firebase": "^8.0.0",
+    "spoonacular_api": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
