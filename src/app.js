@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-
+const SpoonacularApi =require('spoonacular_api');
 import 'firebase/firestore';
 import './sounds.js'
 import './liveSequencer.js';
@@ -336,6 +336,10 @@ window.downloadSequencer =function downloadSequencer() {
         }
     
     }
+
+
+
+
     var key="763fb7be9fa7445b836c7d0967859cda"
 
 
@@ -370,8 +374,35 @@ window.spoonacularQueryGetRecipe = async function() {
     const spoonURL = new URL("https://api.spoonacular.com/recipes/complexSearch?apiKey="+key, import.meta.url);
     let response = await fetch(spoonURL)
         .then(response => response.json())
-        .then(data => console.log(data));;
-    //console.log(response)
+        .then(data => {
+            console.log(data)
+            console.table(data.results)
+        });
+    
 }
     
-    
+
+/*
+console.log("ciaone")
+let defaultClient = SpoonacularApi.ApiClient.instance;
+// Configure API key authorization: apiKeyScheme
+let apiKeyScheme = defaultClient.authentications['apiKeyScheme'];
+apiKeyScheme.apiKey = key;
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//apiKeyScheme.apiKeyPrefix = 'Token';
+
+let apiInstance = new SpoonacularApi.IngredientsApi();
+let id = 9266; // Number | The id of the ingredient you want the amount for.
+let nutrient = "protein"; // String | The target nutrient. See a list of supported nutrients.
+let target = 2; // Number | The target number of the given nutrient.
+let opts = {
+  'unit': oz // String | The target unit.
+};
+apiInstance.computeIngredientAmount(id, nutrient, target, opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+*/
